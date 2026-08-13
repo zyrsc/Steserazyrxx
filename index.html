@@ -30,17 +30,19 @@
         </div>
     </div>
 
-    <!-- Ortak Menü -->
+    <!-- Navigasyon Menüsü -->
     <nav class="glass-panel sticky top-0 z-50 border-b border-slate-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-            <div class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">ZL</div>
                 <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Zeyrox League</span>
-            </div>
-            <div class="hidden md:flex space-x-2">
-                <a href="index.html" class="bg-slate-800 text-white px-4 py-2 rounded-md font-medium">Ana Sayfa</a>
-                <a href="istatistik.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-md font-medium transition">İstatistik & Fikstür</a>
-                <a href="transfermarkt.html" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart"></i> Transfermarkt</a>
+            </a>
+            <div class="hidden md:flex space-x-1">
+                <a href="index.html" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium"><i class="fa-solid fa-house mr-1"></i> Ana Sayfa</a>
+                <a href="puan-durumu.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-list-ol mr-1"></i> Puan Durumu</a>
+                <a href="fikstur.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-regular fa-calendar-days mr-1"></i> Fikstür</a>
+                <a href="kralliklar.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-trophy mr-1"></i> Krallıklar</a>
+                <a href="transfermarkt.html" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart"></i> Transfermarkt</a>
             </div>
         </div>
     </nav>
@@ -49,13 +51,18 @@
     <main class="max-w-7xl mx-auto p-6 mt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-2 space-y-6">
             <div class="glass-panel p-8 rounded-2xl relative overflow-hidden">
-                <h1 class="text-4xl font-bold mb-4">Zeyrox League RP Dünyasına Hoş Geldin!</h1>
+                <h1 class="text-4xl font-bold mb-4">Zeyrox League RP Portalı</h1>
                 <p class="text-slate-300 text-lg mb-6 leading-relaxed">
-                    Menüden İstatistik & Fikstür sayfasına giderek güncel puan durumuna bakabilir veya tamamen yenilenmiş Transfermarkt sistemimizden piyasa değerlerini inceleyebilirsin!
+                    Ligdeki tüm güncel durumlara menüler üzerinden ulaşabilirsin. Transfermarkt sayfamızdan kulüplerin üzerine tıklayarak kadro değerlerini ve stadyum detaylarını inceleyebilirsin!
                 </p>
-                <a href="istatistik.html" class="inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                    <i class="fa-solid fa-table-list mr-2"></i> Ligi İncele
-                </a>
+                <div class="flex gap-4">
+                    <a href="puan-durumu.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                        <i class="fa-solid fa-table-list mr-2"></i> Puan Durumu
+                    </a>
+                    <a href="transfermarkt.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                        <i class="fa-solid fa-users mr-2"></i> Kulüpler & Kadrolar
+                    </a>
+                </div>
             </div>
         </div>
         <div class="glass-panel p-6 rounded-2xl flex flex-col items-center">
