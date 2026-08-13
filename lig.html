@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeyrox League | Puan Durumu & İstatistikler</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Rajdhani', 'sans-serif'] },
+                    colors: { zeyrox: { dark: '#050B14', card: '#0A1325', neon: '#00FFA3', border: '#1A2A42' } }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #050B14;
+            background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 163, 0.05), transparent 25%);
+            color: #E2E8F0;
+        }
+        .glass { background: rgba(10, 19, 37, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigasyon -->
+    <nav class="glass sticky top-0 z-40 border-b border-zeyrox-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-zeyrox-neon rounded flex items-center justify-center">
+                        <i class="fa-solid fa-trophy text-zeyrox-dark text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-display text-2xl font-bold">ZEYROX<span class="text-zeyrox-neon">LEAGUE</span></h1>
+                        <p class="text-xs text-gray-400 font-mono">LİG İSTATİSTİKLERİ</p>
+                    </div>
+                </div>
+                <div class="flex space-x-1 overflow-x-auto py-2">
+                    <a href="index.html" class="px-4 py-2 rounded-lg font-semibold text-sm text-gray-400 hover:text-white">Dashboard</a>
+                    <a href="lig.html" class="px-4 py-2 rounded-lg font-semibold text-sm bg-zeyrox-neon text-zeyrox-dark">Puan & İstatistik</a>
+                    <a href="index.html#clubs" class="px-4 py-2 rounded-lg font-semibold text-sm text-gray-400 hover:text-white">Kulüpler</a>
+                    <a href="transfermarkt.html" class="px-4 py-2 rounded-lg font-semibold text-sm text-gray-400 hover:text-white">Transfermarkt</a>
+                    <a href="index.html#kap" class="px-4 py-2 rounded-lg font-semibold text-sm text-gray-400 hover:text-white">K.A.P Terminali</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6 space-y-6 mt-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Puan Durumu Tablosu -->
+            <div class="lg:col-span-2 glass p-6 rounded-2xl border border-zeyrox-border">
+                <h2 class="text-2xl font-display font-bold mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-zeyrox-neon"></i> Süper Lig Puan Durumu
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="text-xs uppercase text-gray-400 border-b border-zeyrox-border">
+                                <th class="p-3">Sıra</th>
+                                <th class="p-3">Kulüp</th>
+                                <th class="p-3 text-center">O</th>
+                                <th class="p-3 text-center">G</th>
+                                <th class="p-3 text-center">B</th>
+                                <th class="p-3 text-center">M</th>
+                                <th class="p-3 text-center font-bold text-white">Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standingsBody" class="divide-y divide-zeyrox-border/40 font-mono"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fikstür -->
+            <div class="glass p-6 rounded-2xl border border-zeyrox-border space-y-4">
+                <h3 class="font-display text-xl font-bold flex items-center gap-2 text-blue-400">
+                    <i class="fa-solid fa-calendar-days"></i> Son Maçlar
+                </h3>
+                <div id="fixturesBody" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Gol & Asist Krallığı -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass p-6 rounded-2xl border border-zeyrox-border">
+                <h3 class="font-display text-xl font-bold mb-4 text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-futbol"></i> Gol Krallığı
+                </h3>
+                <div id="topScorers" class="space-y-3"></div>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-zeyrox-border">
+                <h3 class="font-display text-xl font-bold mb-4 text-zeyrox-neon flex items-center gap-2">
+                    <i class="fa-solid fa-handshake"></i> Asist Krallığı
+                </h3>
+                <div id="topAssists" class="space-y-3"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const standings = [
+            { rank: 1, name: "Zeyrox FC", o: 12, g: 10, b: 1, m: 1, p: 31 },
+            { rank: 2, name: "Sparta RP", o: 12, g: 9, b: 1, m: 2, p: 28 },
+            { rank: 3, name: "Inter Miami", o: 12, g: 7, b: 3, m: 2, p: 24 },
+            { rank: 11, name: "Manchester City", o: 12, g: 2, b: 1, m: 9, p: 7 }
+        ];
+
+        const fixtures = [
+            { home: "Zeyrox FC", away: "Manchester City", score: "4 - 0" },
+            { home: "Sparta RP", away: "Liverpool", score: "2 - 1" }
+        ];
+
+        const scorers = [
+            { name: "Yaz Yıldırım", club: "Zeyrox FC", count: "18 Gol" },
+            { name: "Mason Greenwood", club: "Sparta RP", count: "14 Gol" }
+        ];
+
+        const assists = [
+            { name: "Yaz Yıldırım", club: "Zeyrox FC", count: "12 Asist" },
+            { name: "Hugo Ekitiké", club: "Manchester City", count: "8 Asist" }
+        ];
+
+        window.addEventListener('load', () => {
+            const sBody = document.getElementById('standingsBody');
+            standings.forEach(s => {
+                sBody.innerHTML += `<tr class="hover:bg-white/5"><td class="p-3 font-bold">${s.rank}</td><td class="p-3 text-white font-sans font-semibold">${s.name}</td><td class="p-3 text-center">${s.o}</td><td class="p-3 text-center">${s.g}</td><td class="p-3 text-center">${s.b}</td><td class="p-3 text-center">${s.m}</td><td class="p-3 text-center font-bold text-zeyrox-neon">${s.p}</td></tr>`;
+            });
+
+            const fBody = document.getElementById('fixturesBody');
+            fixtures.forEach(f => {
+                fBody.innerHTML += `<div class="bg-zeyrox-card p-3 rounded border border-zeyrox-border flex justify-between text-xs font-mono"><span>${f.home}</span><span class="text-zeyrox-neon font-bold">${f.score}</span><span>${f.away}</span></div>`;
+            });
+
+            const scBody = document.getElementById('topScorers');
+            scorers.forEach(sc => {
+                scBody.innerHTML += `<div class="flex justify-between p-3 bg-black/20 rounded"><span class="font-bold text-white">${sc.name} <small class="text-gray-400 block">${sc.club}</small></span><span class="text-yellow-400 font-bold">${sc.count}</span></div>`;
+            });
+
+            const asBody = document.getElementById('topAssists');
+            assists.forEach(as => {
+                asBody.innerHTML += `<div class="flex justify-between p-3 bg-black/20 rounded"><span class="font-bold text-white">${as.name} <small class="text-gray-400 block">${as.club}</small></span><span class="text-zeyrox-neon font-bold">${as.count}</span></div>`;
+            });
+        });
+    </script>
+</body>
+</html>
+
