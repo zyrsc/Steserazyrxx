@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfermarkt | Zeyrox League Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif']
+                    },
                     colors: {
                         tm: {
                             dark: '#0a1e3f',
@@ -29,17 +33,27 @@
     <style>
         body { background-color: #f4f6f8; color: #1f2937; }
         .tm-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        
+        /* Ultimate Futbolcu Kartı Stili (1. Ekran Görüntüsü) */
+        .fut-card {
+            background: linear-gradient(135deg, #1c2438 0%, #0d1424 100%);
+            border: 2px solid #d4af37;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
-    <!-- ÜST HEADER (Transfermarkt Klasik Lacivert Bar) -->
+    <!-- ÜST HEADER -->
     <header class="bg-[#0a1e3f] text-white py-3 px-4 sm:px-8 flex justify-between items-center shadow-md">
         <div class="flex items-center gap-6 cursor-pointer" onclick="showHome()">
             <div class="text-xl font-black tracking-wider flex items-center gap-2">
                 <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-sm">TM</span> TRANSFERMARKT
             </div>
-            <span class="hidden md:inline text-xs text-gray-300 border-l border-gray-600 pl-4">Zeyrox League Veritabanı</span>
+            <span class="hidden md:inline text-xs text-gray-300 border-l border-gray-600 pl-4">Zeyrox League RP Veritabanı</span>
         </div>
         <div class="flex items-center gap-3">
             <div class="text-xs text-right hidden sm:block">
@@ -53,20 +67,19 @@
     <!-- ANA İÇERİK KAPSAYICISI -->
     <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6">
 
-        <!-- 1. GÖRSELDEKİ LİG / ANA MENÜ GÖRÜNÜMÜ -->
+        <!-- ANA MENÜ GÖRÜNÜMÜ -->
         <div id="homeView" class="space-y-6">
-            <!-- Başlık Alanı -->
             <div class="bg-white p-6 rounded-lg tm-shadow border border-tm-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 bg-tm-dark text-white rounded-lg flex items-center justify-center font-bold text-xl"><i class="fa-solid fa-trophy text-yellow-400"></i></div>
                     <div>
-                        <h1 class="text-2xl font-bold text-tm-dark">Zeyrox Süper Lig / Premier League</h1>
+                        <h1 class="text-2xl font-bold text-tm-dark">Zeyrox Süper Lig / Dünya Kulüpleri</h1>
                         <p class="text-xs text-gray-500">Sezon 2025/2026 • Resmi RP Veritabanı</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Ana Menü Kartları (Screenshot 2'deki gibi) -->
+            <!-- Üst 3 Ana Menü Kartı -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div onclick="alert('Oyuncu arama motoru aktif.')" class="bg-white p-5 rounded-lg tm-shadow border border-tm-border cursor-pointer hover:border-blue-500 transition flex items-center gap-4">
                     <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xl"><i class="fa-solid fa-magnifying-glass"></i></div>
@@ -75,11 +88,11 @@
                         <p class="text-xs text-gray-500">Piyasa değerleri ve oyuncu filtreleme</p>
                     </div>
                 </div>
-                <div onclick="showTeam('mancity')" class="bg-white p-5 rounded-lg tm-shadow border border-tm-border cursor-pointer hover:border-blue-500 transition flex items-center gap-4">
+                <div onclick="showTeam('arsenal')" class="bg-white p-5 rounded-lg tm-shadow border border-tm-border cursor-pointer hover:border-blue-500 transition flex items-center gap-4">
                     <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xl"><i class="fa-solid fa-shield-halved"></i></div>
                     <div>
                         <h3 class="font-bold text-sm text-tm-dark">Takımlar</h3>
-                        <p class="text-xs text-gray-500">Lig kulüp kadroları ve detaylar</p>
+                        <p class="text-xs text-gray-500">Dünya kulüp kadroları ve detaylar</p>
                     </div>
                 </div>
                 <div onclick="alert('Transfer tartışmaları ve forum modülü.')" class="bg-white p-5 rounded-lg tm-shadow border border-tm-border cursor-pointer hover:border-blue-500 transition flex items-center gap-4">
@@ -91,65 +104,86 @@
                 </div>
             </div>
 
-            <!-- Kulüpler Grid Listesi -->
+            <!-- İstediğin 8 Kulübün Listesi (Grid) -->
             <div class="bg-white p-6 rounded-lg tm-shadow border border-tm-border">
-                <h2 class="text-lg font-bold text-tm-dark mb-4 pb-2 border-b border-gray-200">Süper Lig / Premier League Kulüpleri</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <!-- Manchester City -->
-                    <div onclick="showTeam('mancity')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
-                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-circle-nodes"></i></div>
-                        <span class="font-bold text-xs">Manchester City</span>
+                <h2 class="text-lg font-bold text-tm-dark mb-4 pb-2 border-b border-gray-200">Seçkin Dünya Kulüpleri (RP Takımları)</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <!-- Atletico Madrid -->
+                    <div onclick="showTeam('atletico')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-red-700 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-shield-cat"></i></div>
+                        <span class="font-bold text-xs">Atletico Madrid</span>
                     </div>
-                    <!-- Zeyrox FC -->
-                    <div onclick="showTeam('zeyrox')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
-                        <div class="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-bolt"></i></div>
-                        <span class="font-bold text-xs">Zeyrox FC</span>
+                    <!-- Paris -->
+                    <div onclick="showTeam('paris')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-star"></i></div>
+                        <span class="font-bold text-xs">Paris Saint-Germain</span>
                     </div>
-                    <!-- Sparta RP -->
-                    <div onclick="showTeam('sparta')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
-                        <div class="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-shield"></i></div>
-                        <span class="font-bold text-xs">Sparta RP</span>
+                    <!-- Dortmund -->
+                    <div onclick="showTeam('dortmund')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-yellow-500 text-black rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-bolt"></i></div>
+                        <span class="font-bold text-xs">Borussia Dortmund</span>
                     </div>
                     <!-- Arsenal -->
                     <div onclick="showTeam('arsenal')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
-                        <div class="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-chess-rook"></i></div>
+                        <div class="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-chess-rook"></i></div>
                         <span class="font-bold text-xs">Arsenal</span>
+                    </div>
+                    <!-- Manchester United -->
+                    <div onclick="showTeam('manutd')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-red-900 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-circle-user"></i></div>
+                        <span class="font-bold text-xs">Manchester United</span>
+                    </div>
+                    <!-- Feyenoord -->
+                    <div onclick="showTeam('feyenoord')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-circle-dot"></i></div>
+                        <span class="font-bold text-xs">Feyenoord</span>
+                    </div>
+                    <!-- Milan -->
+                    <div onclick="showTeam('milan')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-red-800 text-white rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-circle-half-stroke"></i></div>
+                        <span class="font-bold text-xs">AC Milan</span>
+                    </div>
+                    <!-- Barcelona -->
+                    <div onclick="showTeam('barcelona')" class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer flex flex-col items-center text-center transition">
+                        <div class="w-12 h-12 bg-blue-700 text-yellow-400 rounded-full flex items-center justify-center font-bold mb-2 shadow"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="font-bold text-xs">Barcelona</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. GÖRSELDEKİ TAKIM / KADRO GÖRÜNÜMÜ (Gizli Başlar) -->
+        <!-- TAKIM / KADRO GÖRÜNÜMÜ -->
         <div id="teamView" class="hidden space-y-6">
-            <!-- Geri Dön Butonu -->
             <button onclick="showHome()" class="bg-tm-dark text-white text-xs px-4 py-2 rounded font-bold hover:bg-blue-900 transition flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> Lig Anasayfasına Dön
+                <i class="fa-solid fa-arrow-left"></i> Ana Menüye Dön
             </button>
 
-            <!-- Kulüp Üst Bilgi Paneli -->
+            <!-- Kulüp Üst Paneli -->
             <div class="bg-white p-6 rounded-lg tm-shadow border border-tm-border flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div class="flex items-center gap-4">
                     <div id="teamLogoBox" class="w-16 h-16 bg-blue-600 text-white rounded-xl flex items-center justify-center text-2xl font-black shadow"><i class="fa-solid fa-shield-halved"></i></div>
                     <div>
-                        <h1 id="teamTitle" class="text-2xl font-black text-tm-dark">Manchester City</h1>
+                        <h1 id="teamTitle" class="text-2xl font-black text-tm-dark">Kulüp Adı</h1>
                         <div class="text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1 mt-1">
-                            <span>Stadyum: <strong id="teamStadium" class="text-gray-800">Etihad Stadium</strong></span>
-                            <span>Kapasite: <strong class="text-gray-800">53.400</strong></span>
-                            <span>Yaş Ortalaması: <strong class="text-gray-800">27.2</strong></span>
+                            <span>Stadyum: <strong id="teamStadium" class="text-gray-800">-</strong></span>
+                            <span>Kapasite: <strong id="teamCap" class="text-gray-800">-</strong></span>
+                            <span>Yaş Ortalaması: <strong class="text-gray-800">26.5</strong></span>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 border border-gray-200 p-3 rounded-lg text-right w-full md:w-auto">
                     <div class="text-[10px] text-gray-500 uppercase font-bold">Kadro Değeri</div>
-                    <div id="teamValTotal" class="text-lg font-black text-blue-700">€ 645.30 mil.</div>
+                    <div id="teamValTotal" class="text-lg font-black text-blue-700">-</div>
                 </div>
             </div>
 
-            <!-- Alt Detay: Sol Kadro Tablosu, Sağ Teknik Direktör / İstatistikler -->
+            <!-- Kadro Tablosu ve Teknik Direktör -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Sol: Güncel Kadro Tablosu (Screenshot 1'deki gibi) -->
                 <div class="lg:col-span-2 bg-white rounded-lg tm-shadow border border-tm-border overflow-hidden">
-                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 font-bold text-sm text-tm-dark">GÜNCEL KADRO</div>
+                    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 font-bold text-sm text-tm-dark flex justify-between items-center">
+                        <span>GÜNCEL KADRO</span>
+                        <span class="text-[10px] text-gray-500 font-normal">Oyuncu kartını açmak için satıra tıklayın</span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-gray-50 text-gray-500 border-b border-gray-200">
@@ -162,42 +196,30 @@
                                 </tr>
                             </thead>
                             <tbody id="squadTableBody" class="divide-y divide-gray-100">
-                                <!-- JS ile doldurulacak -->
+                                <!-- JS ile dolacak -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Sağ: Teknik Direktör ve Kulüp İstatistikleri Kartı -->
                 <div class="space-y-6">
                     <div class="bg-white rounded-lg tm-shadow border border-tm-border p-5 text-center">
                         <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">TEKNİK DİREKTÖR</div>
-                        <img id="managerPhoto" src="https://ui-avatars.com/api/?name=Pep+Guardiola&size=120" class="w-24 h-24 rounded-lg mx-auto mb-3 object-cover border border-gray-300 shadow-sm">
-                        <h3 id="managerName" class="font-bold text-sm text-tm-dark">Pep Guardiola</h3>
+                        <img id="managerPhoto" src="https://ui-avatars.com/api/?name=Manager&size=120" class="w-24 h-24 rounded-lg mx-auto mb-3 object-cover border border-gray-300 shadow-sm">
+                        <h3 id="managerName" class="font-bold text-sm text-tm-dark">-</h3>
                         <p class="text-[10px] text-gray-500">TEKNİK DİREKTÖR</p>
                     </div>
 
                     <div class="bg-white rounded-lg tm-shadow border border-tm-border p-5">
                         <div class="grid grid-cols-2 gap-2 mb-4 text-center">
                             <div class="bg-tm-dark text-white p-2.5 rounded">
-                                <div id="statRank" class="text-lg font-black">11.</div>
+                                <div id="statRank" class="text-lg font-black">1.</div>
                                 <div class="text-[10px] text-gray-300">LİG SIRASI</div>
                             </div>
                             <div class="bg-emerald-600 text-white p-2.5 rounded">
-                                <div id="statPoints" class="text-lg font-black">7</div>
+                                <div id="statPoints" class="text-lg font-black">35</div>
                                 <div class="text-[10px] text-gray-100">PUAN</div>
                             </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-1 text-center mb-4 text-xs font-bold border-y border-gray-200 py-3">
-                            <div><span class="text-gray-400 block text-[9px]">MAÇ</span><span id="statMatch">12</span></div>
-                            <div><span class="text-gray-400 block text-[9px]">G</span><span id="statWin" class="text-green-600">2</span></div>
-                            <div><span class="text-gray-400 block text-[9px]">B</span><span id="statDraw" class="text-yellow-600">1</span></div>
-                            <div><span class="text-gray-400 block text-[9px]">M</span><span id="statLoss" class="text-red-600">9</span></div>
-                        </div>
-                        <div class="text-xs space-y-1 text-gray-600">
-                            <div class="flex justify-between"><span>Attığı Gol:</span> <strong id="statGF">11</strong></div>
-                            <div class="flex justify-between"><span>Yediği Gol:</span> <strong id="statGA">40</strong></div>
-                            <div class="flex justify-between border-t border-gray-100 pt-1"><span>Averaj:</span> <strong id="statGD" class="text-red-500">-29</strong></div>
                         </div>
                     </div>
                 </div>
@@ -206,52 +228,122 @@
 
     </main>
 
+    <!-- ULTIMATE FUTBOLCU KARTI & RADAR MODAL (1. Ekran Görüntüsü Stili) -->
+    <div id="playerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-4xl bg-[#0a1e3f] rounded-2xl border border-yellow-500/40 shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300 overflow-hidden text-white p-2" id="modalContent">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white w-8 h-8 rounded-full flex justify-center items-center"><i class="fa-solid fa-xmark"></i></button>
+            
+            <!-- Sol: Ultimate Kart -->
+            <div class="w-full md:w-5/12 p-6 flex flex-col items-center justify-center border-r border-gray-700">
+                <div class="fut-card w-[220px] h-[340px] p-4 flex flex-col justify-between text-white relative">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div id="cardOvr" class="text-3xl font-black font-display text-yellow-400">92</div>
+                            <div id="cardPos" class="text-xs font-bold text-emerald-400">SNT</div>
+                            <div class="text-sm mt-1">🇹🇷</div>
+                        </div>
+                        <div class="w-16 h-16 bg-black/40 border border-yellow-500/40 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-user text-2xl text-yellow-500/60"></i>
+                        </div>
+                    </div>
+                    <div class="text-center my-auto">
+                        <div id="cardNameShort" class="font-black text-lg tracking-wider text-yellow-100 uppercase">YILDIRIM</div>
+                    </div>
+                    <div class="border-t border-yellow-500/30 pt-2 text-center">
+                        <div id="cardNameFull" class="font-bold text-sm">Yaz Yıldırım</div>
+                        <div id="cardClub" class="text-[10px] text-gray-400">Barcelona</div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center w-full">
+                    <div class="text-xs text-gray-300">Piyasa Değeri: <strong class="text-emerald-400" id="cardVal">€75.000.000</strong></div>
+                    <div class="text-xs text-gray-300 mt-1">Potansiyel: <span class="text-yellow-400">★★★★★</span></div>
+                </div>
+            </div>
+
+            <!-- Sağ: Yetenek Analiz Radarı -->
+            <div class="w-full md:w-7/12 p-6 flex flex-col justify-center bg-black/30 rounded-r-xl">
+                <h3 class="text-xl font-display font-bold mb-1 text-yellow-400">Yetenek Analiz Radarı</h3>
+                <p class="text-xs text-gray-400 mb-4">Oyuncunun anlık istatistiksel dağılımı.</p>
+                <div class="h-[260px] w-full">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="bg-white border-t border-gray-200 mt-12 py-4 text-center text-xs text-gray-500">
         Transfermarkt Clone • Zeyrox League RP Portalı © 2026
     </footer>
 
     <script>
-        // Takım veritabanı (Screenshot 1 & 2 uyumlu)
+        // 8 Kulüp Veritabanı
         const db = {
-            mancity: {
-                name: "Manchester City", stadium: "Etihad Stadium", value: "€ 645.30 mil.",
-                manager: "Pep Guardiola", rank: "11.", points: "7", match: "12", win: "2", draw: "1", loss: "9", gf: "11", ga: "40", gd: "-29",
+            atletico: {
+                name: "Atletico Madrid", stadium: "Metropolitano Stadium", cap: "70.460", value: "€ 520.00 mil.", manager: "Diego Simeone", rank: "4.", points: "30",
                 squad: [
-                    {no: 1, name: "Jhon Durán", pos: "Santrafor", age: 23, val: "62.50 mil. €"},
-                    {no: 2, name: "Archie Brown", pos: "Sol Bek", age: 23, val: "52.10 mil. €"},
-                    {no: 3, name: "Hugo Ekitiké", pos: "Santrafor", age: 23, val: "50.50 mil. €"},
-                    {no: 4, name: "Raúl Asencio", pos: "Stoper", age: 22, val: "46.10 mil. €"},
-                    {no: 5, name: "Morgan Rogers", pos: "On Numara", age: 23, val: "45.50 mil. €"},
-                    {no: 6, name: "Rayan Cherki", pos: "On Numara", age: 22, val: "45.50 mil. €"},
-                    {no: 7, name: "Abdülkerim Bardakçı", pos: "Stoper", age: 31, val: "35.60 mil. €"},
-                    {no: 8, name: "David Raya", pos: "Kaleci", age: 30, val: "35.60 mil. €"}
+                    {no: 7, name: "Antoine Griezmann", pos: "Forvet", age: 34, val: "25.00 mil. €", ovr: 88, stats: [86, 55, 89, 78, 85, 90, 10]},
+                    {no: 19, name: "Julian Alvarez", pos: "Forvet", age: 26, val: "75.00 mil. €", ovr: 89, stats: [90, 45, 88, 80, 88, 86, 10]},
+                    {no: 6, name: "Koke", pos: "Orta Saha", age: 34, val: "12.00 mil. €", ovr: 84, stats: [75, 76, 85, 82, 74, 92, 10]},
+                    {no: 13, name: "Jan Oblak", pos: "Kaleci", age: 33, val: "28.00 mil. €", ovr: 89, stats: [30, 20, 35, 88, 50, 85, 91]}
                 ]
             },
-            zeyrox: {
-                name: "Zeyrox FC", stadium: "Zeyrox Arena", value: "€ 780.00 mil.",
-                manager: "Yiğitrise", rank: "1.", points: "38", match: "15", win: "12", draw: "2", loss: "1", gf: "42", ga: "17", gd: "+25",
+            paris: {
+                name: "Paris Saint-Germain", stadium: "Parc des Princes", cap: "47.929", value: "€ 890.00 mil.", manager: "Luis Enrique", rank: "1.", points: "41",
                 squad: [
-                    {no: 1, name: "Uğurcan Çakır", pos: "Kaleci", age: 30, val: "25.00 mil. €"},
-                    {no: 5, name: "Ferdi Kadıoğlu", pos: "Sol Bek", age: 26, val: "40.00 mil. €"},
-                    {no: 10, name: "Yaz Yıldırım", pos: "On Numara", age: 22, val: "75.00 mil. €"},
-                    {no: 7, name: "Arda Güler", pos: "Sağ Kanat", age: 21, val: "90.00 mil. €"}
+                    {no: 10, name: "Ousmane Dembele", pos: "Sağ Kanat", age: 29, val: "60.00 mil. €", ovr: 87, stats: [88, 35, 92, 70, 95, 78, 10]},
+                    {no: 2, name: "Achraf Hakimi", pos: "Sağ Bek", age: 27, val: "65.00 mil. €", ovr: 86, stats: [82, 78, 85, 82, 96, 80, 10]},
+                    {no: 17, name: "Vitinha", pos: "Orta Saha", age: 26, val: "55.00 mil. €", ovr: 85, stats: [78, 75, 88, 76, 84, 88, 10]},
+                    {no: 1, name: "Gianluigi Donnarumma", pos: "Kaleci", age: 27, val: "40.00 mil. €", ovr: 88, stats: [30, 20, 30, 85, 50, 82, 90]}
                 ]
             },
-            sparta: {
-                name: "Sparta RP", stadium: "Sparta Park", value: "€ 710.00 mil.",
-                manager: "Kaptan RP", rank: "2.", points: "34", match: "15", win: "11", draw: "1", loss: "3", gf: "38", ga: "20", gd: "+18",
+            dortmund: {
+                name: "Borussia Dortmund", stadium: "Signal Iduna Park", cap: "81.365", value: "€ 460.00 mil.", manager: "Nuri Şahin", rank: "5.", points: "28",
                 squad: [
-                    {no: 9, name: "Mason Greenwood", pos: "Santrafor", age: 24, val: "85.00 mil. €"},
-                    {no: 8, name: "Hakan Çalhanoğlu", pos: "Merkez", age: 32, val: "30.00 mil. €"}
+                    {no: 9, name: "Serhou Guirassy", pos: "Santrafor", age: 30, val: "40.00 mil. €", ovr: 85, stats: [87, 35, 80, 86, 82, 78, 10]},
+                    {no: 10, name: "Julian Brandt", pos: "On Numara", age: 30, val: "35.00 mil. €", ovr: 84, stats: [80, 50, 86, 74, 81, 82, 10]},
+                    {no: 4, name: "Nico Schlotterbeck", pos: "Stoper", age: 26, val: "40.00 mil. €", ovr: 85, stats: [60, 87, 78, 85, 75, 83, 10]},
+                    {no: 1, name: "Gregor Kobel", pos: "Kaleci", age: 28, val: "40.00 mil. €", ovr: 87, stats: [30, 20, 32, 86, 50, 83, 88]}
                 ]
             },
             arsenal: {
-                name: "Arsenal", stadium: "Emirates Stadium", value: "€ 1.12 bil.",
-                manager: "Mikel Arteta", rank: "3.", points: "32", match: "15", win: "10", draw: "2", loss: "3", gf: "35", ga: "15", gd: "+20",
+                name: "Arsenal", stadium: "Emirates Stadium", cap: "60.704", value: "€ 1.12 bil.", manager: "Mikel Arteta", rank: "2.", points: "38",
                 squad: [
-                    {no: 4, name: "Bukayo Saka", pos: "Sağ Kanat", age: 24, val: "130.00 mil. €"},
-                    {no: 41, name: "Declan Rice", pos: "Ön Libero", age: 27, val: "120.00 mil. €"}
+                    {no: 7, name: "Bukayo Saka", pos: "Sağ Kanat", age: 24, val: "130.00 mil. €", ovr: 90, stats: [90, 60, 91, 78, 92, 86, 10]},
+                    {no: 41, name: "Declan Rice", pos: "Ön Libero", age: 27, val: "120.00 mil. €", ovr: 89, stats: [75, 90, 82, 91, 85, 92, 10]},
+                    {no: 8, name: "Martin Ødegaard", pos: "On Numara", age: 27, val: "110.00 mil. €", ovr: 89, stats: [83, 62, 92, 75, 86, 93, 10]}
+                ]
+            },
+            manutd: {
+                name: "Manchester United", stadium: "Old Trafford", cap: "74.310", value: "€ 620.00 mil.", manager: "Rúben Amorim", rank: "7.", points: "24",
+                squad: [
+                    {no: 8, name: "Bruno Fernandes", pos: "On Numara", age: 31, val: "65.00 mil. €", ovr: 88, stats: [85, 65, 90, 76, 84, 91, 10]},
+                    {no: 10, name: "Marcus Rashford", pos: "Sol Kanat", age: 28, val: "55.00 mil. €", ovr: 84, stats: [86, 40, 85, 78, 94, 75, 10]},
+                    {no: 37, name: "Kobbie Mainoo", pos: "Orta Saha", age: 21, val: "50.00 mil. €", ovr: 82, stats: [74, 75, 85, 74, 80, 83, 10]}
+                ]
+            },
+            feyenoord: {
+                name: "Feyenoord", stadium: "De Kuip", cap: "51.177", value: "€ 280.00 mil.", manager: "Brian Priske", rank: "3.", points: "32",
+                squad: [
+                    {no: 29, name: "Santiago Giménez", pos: "Santrafor", age: 25, val: "40.00 mil. €", ovr: 83, stats: [85, 35, 78, 82, 80, 76, 10]},
+                    {no: 10, name: "Quinten Timber", pos: "Orta Saha", age: 25, val: "30.00 mil. €", ovr: 81, stats: [75, 78, 82, 80, 83, 80, 10]},
+                    {no: 33, name: "David Hancko", pos: "Stoper", age: 28, val: "35.00 mil. €", ovr: 82, stats: [60, 84, 75, 82, 76, 82, 10]}
+                ]
+            },
+            milan: {
+                name: "AC Milan", stadium: "San Siro", cap: "75.817", value: "€ 550.00 mil.", manager: "Paulo Fonseca", rank: "3.", points: "33",
+                squad: [
+                    {no: 10, name: "Rafael Leão", pos: "Sol Kanat", age: 27, val: "90.00 mil. €", ovr: 88, stats: [90, 38, 92, 80, 97, 80, 10]},
+                    {no: 11, name: "Christian Pulisic", pos: "Sağ Kanat", age: 27, val: "50.00 mil. €", ovr: 85, stats: [84, 45, 88, 72, 89, 81, 10]},
+                    {no: 19, name: "Theo Hernández", pos: "Sol Bek", age: 28, val: "60.00 mil. €", ovr: 86, stats: [84, 80, 85, 86, 96, 82, 10]}
+                ]
+            },
+            barcelona: {
+                name: "Barcelona", stadium: "Spotify Camp Nou", cap: "55.926", value: "€ 940.00 mil.", manager: "Hansi Flick", rank: "1.", points: "42",
+                squad: [
+                    {no: 19, name: "Lamine Yamal", pos: "Sağ Kanat", age: 19, val: "150.00 mil. €", ovr: 89, stats: [87, 40, 95, 68, 92, 85, 10]},
+                    {no: 9, name: "Robert Lewandowski", pos: "Santrafor", age: 37, val: "15.00 mil. €", ovr: 88, stats: [91, 40, 85, 88, 80, 89, 10]},
+                    {no: 10, name: "Yaz Yıldırım", pos: "On Numara", age: 22, val: "75.00 mil. €", ovr: 92, stats: [88, 50, 96, 75, 92, 88, 10]}
                 ]
             }
         };
@@ -263,31 +355,23 @@
         }
 
         function showTeam(teamKey) {
-            const data = db[teamKey] || db['mancity'];
+            const data = db[teamKey] || db['barcelona'];
             document.getElementById('teamTitle').innerText = data.name;
             document.getElementById('teamStadium').innerText = data.stadium;
+            document.getElementById('teamCap').innerText = data.cap;
             document.getElementById('teamValTotal').innerText = data.value;
-            
             document.getElementById('managerName').innerText = data.manager;
             document.getElementById('statRank').innerText = data.rank;
             document.getElementById('statPoints').innerText = data.points;
-            document.getElementById('statMatch').innerText = data.match;
-            document.getElementById('statWin').innerText = data.win;
-            document.getElementById('statDraw').innerText = data.draw;
-            document.getElementById('statLoss').innerText = data.loss;
-            document.getElementById('statGF').innerText = data.gf;
-            document.getElementById('statGA').innerText = data.ga;
-            document.getElementById('statGD').innerText = data.gd;
 
-            // Kadro tablosunu doldur
             const tbody = document.getElementById('squadTableBody');
             tbody.innerHTML = '';
-            data.squad.forEach(p => {
+            data.squad.forEach((p, idx) => {
                 tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 border-b border-gray-100">
-                        <td class="p-3 font-bold text-gray-500">${p.no}</td>
+                    <tr class="hover:bg-blue-50/50 border-b border-gray-100 cursor-pointer transition" onclick='openPlayerModal(${JSON.stringify(p)}, "${data.name}")'>
+                        <td class="p-3 font-bold text-gray-500">${idx + 1}</td>
                         <td class="p-3 flex items-center gap-3">
-                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[10px] text-gray-600">${p.name.substring(0,2).toUpperCase()}</div>
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-900 to-blue-700 text-yellow-400 rounded-full flex items-center justify-center font-bold text-[10px] shadow">${p.ovr}</div>
                             <span class="font-bold text-tm-dark">${p.name}</span>
                         </td>
                         <td class="p-3 text-gray-600">${p.pos}</td>
@@ -300,6 +384,59 @@
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('teamView').classList.remove('hidden');
             window.scrollTo(0,0);
+        }
+
+        let myChart = null;
+        function openPlayerModal(p, clubName) {
+            document.getElementById('cardOvr').innerText = p.ovr;
+            document.getElementById('cardPos').innerText = p.pos;
+            document.getElementById('cardNameShort').innerText = p.name.split(" ").pop().toUpperCase();
+            document.getElementById('cardNameFull').innerText = p.name;
+            document.getElementById('cardClub').innerText = clubName;
+            document.getElementById('cardVal').innerText = p.val;
+
+            const modal = document.getElementById('playerModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+
+            if(myChart) myChart.destroy();
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Atak', 'Savunma', 'Beceri', 'Güç', 'Hareket', 'Mentalite', 'Kaleci'],
+                    datasets: [{
+                        label: p.name,
+                        data: p.stats,
+                        backgroundColor: 'rgba(212, 175, 55, 0.25)',
+                        borderColor: '#d4af37',
+                        pointBackgroundColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        r: { 
+                            min: 0, max: 100, 
+                            ticks: { display: false }, 
+                            grid: { color: 'rgba(255,255,255,0.1)' }, 
+                            angleLines: { color: 'rgba(255,255,255,0.1)' }, 
+                            pointLabels: { color: '#fff', font: { size: 11, family: 'Rajdhani' } } 
+                        } 
+                    }, 
+                    plugins: { legend: { display: false } } 
+                }
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('playerModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
     </script>
 </body>
