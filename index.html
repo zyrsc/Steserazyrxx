@@ -3,362 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeyrox League | Ana Sayfa & Kulüpler</title>
-    <!-- Tailwind CSS -->
+    <title>Zeyrox League | Ana Sayfa</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Rajdhani', 'sans-serif'] },
-                    colors: { zeyrox: { dark: '#050B14', card: '#0A1325', neon: '#00FFA3', border: '#1A2A42' } }
-                }
-            }
-        }
-    </script>
-    
     <style>
-        body {
-            background-color: #050B14;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(0, 255, 163, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 163, 255, 0.05), transparent 25%);
-            color: #E2E8F0;
-            overflow-x: hidden;
-        }
-        #loader { transition: opacity 0.5s ease-out, visibility 0.5s; }
-        .glass {
-            background: rgba(10, 19, 37, 0.65);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-        .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease-in-out; backdrop-filter: blur(10px); }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content { transform: scale(0.95) translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
-        .premium-card {
-            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #996515 100%);
-            padding: 2px;
-            border-radius: 1rem;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-        .premium-card:hover { transform: rotateY(10deg) rotateX(5deg); }
-        .premium-card-inner { background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'), #111; border-radius: 0.9rem; height: 100%; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #020617 100%); color: white; min-height: 100vh; }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee { display: inline-block; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .player-card { transition: transform 0.3s ease; transform-style: preserve-3d; }
+        .player-card:hover { transform: translateY(-10px) rotateX(5deg) rotateY(-5deg); box-shadow: -5px 15px 30px rgba(16, 185, 129, 0.3); border-color: #10b981; }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-hidden">
 
-    <!-- Yükleme Ekranı -->
-    <div id="loader" class="fixed inset-0 z-[100] bg-zeyrox-dark flex flex-col items-center justify-center">
-        <div class="relative w-24 h-24">
-            <div class="absolute inset-0 border-4 border-zeyrox-neon border-t-transparent rounded-full animate-spin"></div>
-            <div class="absolute inset-2 border-4 border-blue-500 border-b-transparent rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
-            <i class="fa-solid fa-futbol absolute inset-0 m-auto text-3xl text-white flex items-center justify-center animate-pulse"></i>
+    <!-- KAP Bildirim Bandı -->
+    <div class="bg-emerald-600 text-white text-sm font-semibold py-2 marquee-container flex items-center">
+        <div class="px-4 bg-emerald-800 z-10 relative flex items-center shadow-lg uppercase tracking-wider">
+            <i class="fa-solid fa-bolt text-yellow-300 mr-2"></i> KAP Bildirimleri
         </div>
-        <h2 class="mt-6 font-display text-2xl font-bold tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">ZEYROX LEAGUE</h2>
-        <p class="text-zeyrox-neon text-sm mt-2 font-mono" id="loading-text">Veritabanı Yükleniyor...</p>
+        <div class="marquee ml-4">
+            🔄 RESMİ: 🎖️ Kaptan V. Yılmaz 15M€ karşılığında Paris'e transfer oldu! &nbsp;&nbsp; | &nbsp;&nbsp; 
+            ✍️ YENİ SÖZLEŞME: E. Arslan Dortmund ile 3 yıllık yeni kontrat imzaladı.
+        </div>
     </div>
 
-    <!-- Navigasyon -->
-    <nav class="glass sticky top-0 z-40 border-b border-zeyrox-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-zeyrox-neon rounded flex items-center justify-center shadow-[0_0_15px_rgba(0,255,163,0.4)]">
-                        <i class="fa-solid fa-database text-zeyrox-dark text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-display text-2xl font-bold tracking-wider">ZEYROX<span class="text-zeyrox-neon">HUB</span></h1>
-                        <p class="text-xs text-gray-400 font-mono tracking-widest">FC RP DATA CENTER</p>
-                    </div>
-                </div>
-                <div class="flex space-x-1 overflow-x-auto py-2">
-                    <a href="index.html" class="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-zeyrox-neon text-zeyrox-dark whitespace-nowrap">Dashboard</a>
-                    <a href="lig.html" class="px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-400 hover:text-white hover:bg-white/5 whitespace-nowrap">Puan & İstatistik</a>
-                    <a href="index.html#clubs" class="px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-400 hover:text-white hover:bg-white/5 whitespace-nowrap">Kulüpler</a>
-                    <a href="transfermarkt.html" class="px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-400 hover:text-white hover:bg-white/5 whitespace-nowrap">Transfermarkt</a>
-                    <a href="index.html#kap" class="px-4 py-2 rounded-lg font-semibold text-sm transition-all text-gray-400 hover:text-white hover:bg-white/5 whitespace-nowrap">K.A.P Terminali</a>
-                </div>
+    <!-- Ortak Menü -->
+    <nav class="glass-panel sticky top-0 z-50 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">ZL</div>
+                <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Zeyrox League</span>
+            </div>
+            <div class="hidden md:flex space-x-2">
+                <a href="index.html" class="bg-slate-800 text-white px-4 py-2 rounded-md font-medium">Ana Sayfa</a>
+                <a href="istatistik.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-md font-medium transition">İstatistik & Fikstür</a>
+                <a href="transfermarkt.html" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart"></i> Transfermarkt</a>
             </div>
         </div>
     </nav>
 
     <!-- İçerik -->
-    <main class="max-w-7xl mx-auto p-6 space-y-10 mt-4">
-
-        <!-- DASHBOARD SECTION -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="glass p-8 rounded-2xl relative overflow-hidden border border-zeyrox-border">
-                    <div class="absolute -right-10 -top-10 opacity-5 text-[15rem]"><i class="fa-solid fa-trophy"></i></div>
-                    <div class="relative z-10">
-                        <span class="bg-zeyrox-neon/20 text-zeyrox-neon px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block border border-zeyrox-neon/50">Canlı Veri Akışı</span>
-                        <h2 class="text-4xl font-display font-bold mb-4">Roleplay Futbolunun Zirvesi</h2>
-                        <p class="text-gray-400 max-w-2xl text-sm leading-relaxed mb-6">
-                            Bota işlenen antrenman verileri, güncel transferler ve oyuncu statları anlık olarak bu terminale yansır.
-                        </p>
-                        <div class="flex gap-4">
-                            <a href="transfermarkt.html" class="bg-white text-black font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition">
-                                <i class="fa-solid fa-magnifying-glass mr-2"></i> Scouting Sistemini Aç
-                            </a>
-                            <a href="lig.html" class="bg-zeyrox-card border border-zeyrox-border text-white font-bold py-3 px-6 rounded-lg hover:bg-white/10 transition">
-                                <i class="fa-solid fa-list-ol mr-2"></i> Puan Durumu
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="glass p-5 rounded-xl border-t-2 border-t-zeyrox-neon">
-                        <div class="text-gray-400 text-xs font-bold uppercase mb-1">Toplam Kadro Değeri</div>
-                        <div class="text-2xl font-display font-bold">€485.5M</div>
-                    </div>
-                    <div class="glass p-5 rounded-xl border-t-2 border-t-blue-500">
-                        <div class="text-gray-400 text-xs font-bold uppercase mb-1">Kayıtlı Oyuncu</div>
-                        <div class="text-2xl font-display font-bold">142</div>
-                    </div>
-                    <div class="glass p-5 rounded-xl border-t-2 border-t-purple-500">
-                        <div class="text-gray-400 text-xs font-bold uppercase mb-1">Aktif Transfer</div>
-                        <div class="text-2xl font-display font-bold">34</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Haftanın Yıldızı Card -->
-            <div class="glass p-6 rounded-2xl flex flex-col items-center border border-zeyrox-border relative">
-                <h3 class="font-display text-xl font-bold mb-6 w-full text-center">HAFTANIN YILDIZI</h3>
-                <div class="premium-card w-64 h-96 shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer" onclick="openPlayerModal('Yaz Yıldırım')">
-                    <div class="premium-card-inner p-4 flex flex-col items-center relative overflow-hidden">
-                        <div class="absolute top-3 left-4 flex flex-col items-center">
-                            <span class="text-4xl font-display font-bold text-white drop-shadow-md">94</span>
-                            <span class="text-sm font-bold text-yellow-500">OOS</span>
-                            <img src="https://flagcdn.com/w40/tr.png" class="w-6 mt-1 rounded-sm shadow">
-                        </div>
-                        <div class="mt-8 mb-4">
-                            <img src="https://ui-avatars.com/api/?name=Y+Y&background=111&color=FFD700&size=140&rounded=true" class="border-2 border-yellow-500/50 shadow-xl">
-                        </div>
-                        <h2 class="font-display text-2xl font-bold tracking-wider text-white uppercase">Yaz Yıldırım</h2>
-                        <div class="w-full h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-2"></div>
-                        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-center w-full px-4 mt-2">
-                            <div><span class="text-xl font-display font-bold">95</span> <span class="text-[10px] text-gray-400">HIZ</span></div>
-                            <div><span class="text-xl font-display font-bold">92</span> <span class="text-[10px] text-gray-400">ŞUT</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- KULÜPLER SECTION -->
-        <section id="clubs" class="space-y-8 pt-4">
-            <div class="glass p-6 rounded-2xl border border-zeyrox-border">
-                <h2 class="text-xl font-display font-bold uppercase tracking-wider mb-6 text-gray-300">Zeyrox League Kulüpleri</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" id="clubsGrid"></div>
-            </div>
-
-            <!-- Seçili Kulüp Detayı -->
-            <div id="clubDetailView" class="glass rounded-2xl border border-zeyrox-border p-6 space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-center pb-6 border-b border-zeyrox-border gap-6">
-                    <div class="flex items-center gap-6">
-                        <div class="w-24 h-24 rounded-full bg-black/40 p-2 border border-zeyrox-border flex items-center justify-center shadow-lg">
-                            <img id="cdBadge" src="" class="max-h-full max-w-full object-contain">
-                        </div>
-                        <div>
-                            <h2 id="cdName" class="text-4xl font-display font-bold">Kulüp Adı</h2>
-                            <div class="flex flex-wrap gap-4 text-xs font-mono text-gray-400 mt-2">
-                                <span>Stadyum: <strong id="cdStadium" class="text-white">-</strong></span>
-                                <span>Kapasite: <strong id="cdCapacity" class="text-white">-</strong></span>
-                                <span>Yaş Ort.: <strong id="cdAgeAvg" class="text-white">-</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-zeyrox-card border border-zeyrox-border px-6 py-4 rounded-xl text-right">
-                        <div class="text-xs uppercase text-gray-400 font-bold tracking-widest">KADRO DEĞERİ</div>
-                        <div id="cdSquadValue" class="text-3xl font-display font-bold text-zeyrox-neon">€ 0.00 mil.</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-4">
-                        <h3 class="font-display text-xl font-bold uppercase text-gray-300">GÜNCEL KADRO</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm">
-                                <thead>
-                                    <tr class="text-xs uppercase text-gray-400 border-b border-zeyrox-border">
-                                        <th class="p-3">#</th>
-                                        <th class="p-3">Oyuncu</th>
-                                        <th class="p-3">Mevki</th>
-                                        <th class="p-3">Yaş</th>
-                                        <th class="p-3 text-right">Piyasa Değeri</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cdSquadBody" class="divide-y divide-zeyrox-border/40 font-mono"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div class="glass p-6 rounded-xl border border-zeyrox-border text-center flex flex-col items-center">
-                            <h4 class="text-xs font-bold uppercase text-gray-400 mb-4 w-full text-left">TEKNİK DİREKTÖR</h4>
-                            <img id="cdManagerImg" src="" class="w-28 h-28 rounded-xl object-cover border-2 border-zeyrox-neon shadow-lg mb-3">
-                            <h3 id="cdManagerName" class="text-xl font-display font-bold">-</h3>
-                            <span class="text-xs text-gray-400 uppercase font-mono">TEKNİK DİREKTÖR</span>
-                        </div>
-
-                        <div class="glass p-6 rounded-xl border border-zeyrox-border space-y-4">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="bg-zeyrox-card p-4 rounded-lg border border-zeyrox-border text-center">
-                                    <div id="cdRank" class="text-3xl font-display font-bold text-blue-400">1.</div>
-                                    <div class="text-[10px] uppercase text-gray-400 font-bold">LİG SIRASI</div>
-                                </div>
-                                <div class="bg-green-600/20 border border-green-500/40 p-4 rounded-lg text-center">
-                                    <div id="cdPoints" class="text-3xl font-display font-bold text-green-400">0</div>
-                                    <div class="text-[10px] uppercase text-gray-400 font-bold">PUAN</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- KAP SECTION -->
-        <section id="kap" class="glass p-8 rounded-2xl border border-zeyrox-border">
-            <h2 class="text-3xl font-display font-bold mb-6 flex items-center gap-3">
-                <i class="fa-solid fa-bullhorn text-red-500 animate-pulse"></i> KAP Bildirimleri
-            </h2>
-            <div class="space-y-4">
-                <div class="bg-zeyrox-card/50 border-l-4 border-l-zeyrox-neon p-4 rounded-r-lg">
-                    <span class="text-xs font-mono text-gray-400">13 Ağu 2026 - 15:20</span>
-                    <p class="text-white text-sm mt-1">Profesyonel futbolcu <strong class="text-zeyrox-neon">Mason Greenwood</strong> transfer edilmiştir. Bonservis: <strong>€85.000.000</strong>.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Player Modal -->
-    <div id="playerModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 hidden">
-        <div class="modal-content w-full max-w-4xl glass rounded-2xl border border-zeyrox-border p-6 relative flex flex-col md:flex-row gap-6">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-red-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="w-full md:w-1/2 flex flex-col items-center">
-                <h3 id="modalPlayerName" class="text-2xl font-display font-bold text-white">İsim</h3>
-                <p id="modalPlayerClub" class="text-sm text-gray-400">Kulüp</p>
-            </div>
-            <div class="w-full md:w-1/2 min-h-[250px]">
-                <canvas id="statRadarChart"></canvas>
+    <main class="max-w-7xl mx-auto p-6 mt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2 space-y-6">
+            <div class="glass-panel p-8 rounded-2xl relative overflow-hidden">
+                <h1 class="text-4xl font-bold mb-4">Zeyrox League RP Dünyasına Hoş Geldin!</h1>
+                <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+                    Menüden İstatistik & Fikstür sayfasına giderek güncel puan durumuna bakabilir veya tamamen yenilenmiş Transfermarkt sistemimizden piyasa değerlerini inceleyebilirsin!
+                </p>
+                <a href="istatistik.html" class="inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                    <i class="fa-solid fa-table-list mr-2"></i> Ligi İncele
+                </a>
             </div>
         </div>
-    </div>
-
-    <script>
-        const clubsData = {
-            "mcfc": {
-                name: "Manchester City", badge: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-                stadium: "Etihad Stadium", capacity: "53.400", avgAge: "27.2", squadValue: "€ 645.30 mil.",
-                manager: { name: "Pep Guardiola", img: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/pep-guardiola-portrait-barry-spence.jpg" },
-                rank: 11, points: 7,
-                squad: [
-                    { id: 1, name: "Jhon Durán", pos: "Santrafor", age: 23, val: "62.50 mil. €", img: "https://ui-avatars.com/api/?name=J+D&background=0D8ABC&color=fff" },
-                    { id: 2, name: "Archie Brown", pos: "Sol Bek", age: 23, val: "52.10 mil. €", img: "https://ui-avatars.com/api/?name=A+B&background=0D8ABC&color=fff" }
-                ]
-            },
-            "zeyrox": {
-                name: "Zeyrox FC", badge: "https://ui-avatars.com/api/?name=Z+FC&background=00FFA3&color=050B14",
-                stadium: "Zeyrox Arena", capacity: "65.000", avgAge: "24.5", squadValue: "€ 780.00 mil.",
-                manager: { name: "Zeyrox Hoca", img: "https://ui-avatars.com/api/?name=Z+H&background=111&color=00FFA3" },
-                rank: 1, points: 31,
-                squad: [{ id: 1, name: "Yaz Yıldırım", pos: "On Numara", age: 22, val: "75.00 mil. €", img: "https://ui-avatars.com/api/?name=Y+Y&background=111&color=FFD700" }]
-            }
-        };
-
-        function renderClubsGrid() {
-            const grid = document.getElementById('clubsGrid');
-            grid.innerHTML = '';
-            Object.keys(clubsData).forEach(key => {
-                const c = clubsData[key];
-                grid.innerHTML += `
-                    <div onclick="selectClub('${key}')" class="glass p-4 rounded-xl border border-zeyrox-border flex flex-col items-center justify-center cursor-pointer hover:border-zeyrox-neon transition text-center">
-                        <img src="${c.badge}" class="w-12 h-12 object-contain mb-2">
-                        <span class="font-display font-bold text-xs text-white">${c.name}</span>
-                    </div>
-                `;
-            });
-        }
-
-        function selectClub(key) {
-            const c = clubsData[key];
-            if(!c) return;
-            document.getElementById('cdBadge').src = c.badge;
-            document.getElementById('cdName').innerText = c.name;
-            document.getElementById('cdStadium').innerText = c.stadium;
-            document.getElementById('cdCapacity').innerText = c.capacity;
-            document.getElementById('cdAgeAvg').innerText = c.avgAge;
-            document.getElementById('cdSquadValue').innerText = c.squadValue;
-            document.getElementById('cdManagerName').innerText = c.manager.name;
-            document.getElementById('cdManagerImg').src = c.manager.img;
-            document.getElementById('cdRank').innerText = c.rank + ".";
-            document.getElementById('cdPoints').innerText = c.points;
-
-            const sBody = document.getElementById('cdSquadBody');
-            sBody.innerHTML = '';
-            c.squad.forEach(p => {
-                sBody.innerHTML += `
-                    <tr>
-                        <td class="p-3 font-bold text-gray-500">${p.id}</td>
-                        <td class="p-3 font-bold text-white">${p.name}</td>
-                        <td class="p-3 text-gray-400">${p.pos}</td>
-                        <td class="p-3 text-gray-400">${p.age}</td>
-                        <td class="p-3 text-right font-bold text-white">${p.val}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        let myRadarChart = null;
-        function openPlayerModal(name) {
-            document.getElementById('modalPlayerName').innerText = name;
-            document.getElementById('modalPlayerClub').innerText = "Zeyrox FC";
-            const modal = document.getElementById('playerModal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('active'), 10);
-            drawRadar([90, 80, 85, 88, 92, 78, 10]);
-        }
-        function closeModal() {
-            const modal = document.getElementById('playerModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-        function drawRadar(stats) {
-            const ctx = document.getElementById('statRadarChart').getContext('2d');
-            if (myRadarChart) myRadarChart.destroy();
-            myRadarChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Atak', 'Savunma', 'Beceri', 'Güç', 'Hareket', 'Mentalite', 'Kaleci'],
-                    datasets: [{ data: stats, backgroundColor: 'rgba(0, 255, 163, 0.2)', borderColor: '#00FFA3' }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
-
-        window.addEventListener('load', () => {
-            renderClubsGrid();
-            selectClub('mcfc');
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.visibility = 'hidden', 500);
-            }, 500);
-        });
-    </script>
+        <div class="glass-panel p-6 rounded-2xl flex flex-col items-center">
+            <h2 class="text-xl font-bold mb-6 w-full border-b border-slate-700 pb-2"><i class="fa-solid fa-star text-yellow-400 mr-2"></i> Haftanın Oyuncusu</h2>
+            <div class="player-card bg-gradient-to-br from-yellow-600 via-yellow-400 to-yellow-700 w-64 rounded-xl p-1 shadow-2xl cursor-pointer">
+                <div class="bg-slate-900 w-full h-full rounded-lg p-4 relative overflow-hidden text-center">
+                    <img src="https://ui-avatars.com/api/?name=Arda+G&background=0D8ABC&color=fff&size=120&rounded=true" class="mx-auto mt-4 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)] border-4 border-yellow-500/30">
+                    <h3 class="font-black text-xl text-white mt-4">ARDA G. 🎖️</h3>
+                    <p class="text-xs text-yellow-500 font-bold mb-3">Dortmund RP</p>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
