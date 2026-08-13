@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeyrox Transfermarkt</title>
+    <title>Transfermarkt | Zeyrox League</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,196 +19,230 @@
     <!-- Navbar -->
     <nav class="tm-blue text-white py-3 px-6 flex justify-between items-center sticky top-0 z-50">
         <a href="index.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition">
-            <i class="fa-solid fa-arrow-left"></i> <span class="text-xs">Zeyrox Ana Sayfa'ya Dön</span>
+            <i class="fa-solid fa-arrow-left"></i> <span class="text-xs font-bold">Zeyrox Portalı'na Dön</span>
         </a>
         <div class="text-2xl font-bold tracking-tight">Transfermarkt</div>
         <div class="flex items-center gap-3">
-            <span class="text-sm">Yigitrise</span>
+            <span class="text-sm font-bold">Yigitrise</span>
             <img src="https://ui-avatars.com/api/?name=Yigit+R&background=fff&color=1a3151&rounded=true&size=32" class="border border-white">
         </div>
     </nav>
 
     <div class="max-w-6xl mx-auto mt-6 px-4">
         
-        <!-- Üst Başlık -->
-        <div class="flex items-center justify-between border-b-2 border-gray-300 pb-4 mb-6">
-            <div class="flex items-center gap-4">
-                <div class="bg-white p-2 rounded card-shadow">
-                    <img src="https://ui-avatars.com/api/?name=ZL&background=1a3151&color=fff&size=48" alt="League Logo">
-                </div>
-                <h1 class="text-4xl font-bold tm-text-blue">Zeyrox League</h1>
-            </div>
-            <div class="text-gray-500 font-medium">Sezon 2026/2027</div>
-        </div>
-
-        <!-- SCREENSHOT 2: LİG GÖRÜNÜMÜ & KULÜPLER -->
+        <!-- ZEYROX KULÜPLERİ GRID (GERÇEK LOGOLAR + TIKLANABİLİR) -->
         <div class="bg-white card-shadow rounded-sm mb-8">
-            <div class="bg-gray-200 px-4 py-2 font-bold text-xs text-gray-700 uppercase border-b border-gray-300">Zeyrox Kulüpleri</div>
+            <div class="bg-gray-200 px-4 py-2 font-bold text-xs text-gray-700 uppercase border-b border-gray-300">Zeyrox League Kulüpleri (İncelemek İçin Tıkla)</div>
             <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Takım Kartları -->
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=DOR&background=fbbf24&color=000&rounded=true&size=50" class="mx-auto mb-2">
+                
+                <div onclick="loadTeam('dortmund')" class="border border-gray-200 rounded p-4 text-center hover:border-yellow-500 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Dortmund</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=MIL&background=dc2626&color=000&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('milan')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/AC-Milan-AC-Milan.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Milan</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition bg-gray-50">
-                    <img src="https://ui-avatars.com/api/?name=ARS&background=b91c1c&color=fff&rounded=true&size=50" class="mx-auto mb-2">
-                    <span class="font-bold text-sm tm-text-blue">Arsenal</span>
+
+                <div onclick="loadTeam('arsenal')" class="border border-gray-200 rounded p-4 text-center hover:border-red-600 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" class="h-12 mx-auto mb-2 object-contain">
+                    <span class="font-bold text-sm">Arsenal</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=MUN&background=991b1b&color=fff&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('manutd')" class="border border-gray-200 rounded p-4 text-center hover:border-red-700 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Manchester United</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=PSG&background=1e3a8a&color=fff&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('paris')" class="border border-gray-200 rounded p-4 text-center hover:border-blue-600 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Paris</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=ATM&background=e11d48&color=fff&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('atletico')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Atletico Madrid</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=FEY&background=ef4444&color=fff&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('feyenoord')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Feyenoord_logo.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Feyenoord</span>
                 </div>
-                <div class="border border-gray-200 rounded p-4 text-center hover:shadow-md cursor-pointer transition">
-                    <img src="https://ui-avatars.com/api/?name=BAR&background=1d4ed8&color=ef4444&rounded=true&size=50" class="mx-auto mb-2">
+
+                <div onclick="loadTeam('barcelona')" class="border border-gray-200 rounded p-4 text-center hover:border-blue-800 hover:shadow-md cursor-pointer transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" class="h-12 mx-auto mb-2 object-contain">
                     <span class="font-bold text-sm">Barcelona</span>
                 </div>
+
             </div>
         </div>
 
-        <hr class="border-t-2 border-gray-300 my-10">
+        <hr class="border-t-2 border-gray-300 my-8">
 
-        <!-- SCREENSHOT 1: SPESİFİK TAKIM DETAY EKRANI (Örn: Arsenal) -->
-        
-        <!-- Takım Başlığı -->
-        <div class="bg-white p-6 flex flex-col md:flex-row justify-between items-center card-shadow mb-6 relative">
-            <div class="flex items-center gap-6">
-                <img src="https://ui-avatars.com/api/?name=ARS&background=b91c1c&color=fff&rounded=true&size=100" class="border border-gray-200 p-1">
+        <!-- DİNAMİK TAKIM DETAY ALANI -->
+        <div id="team-view">
+            <!-- Takım Başlığı -->
+            <div class="bg-white p-6 flex flex-col md:flex-row justify-between items-center card-shadow mb-6 relative">
+                <div class="flex items-center gap-6">
+                    <img id="t-logo" src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" class="h-24 w-24 object-contain">
+                    <div>
+                        <h2 id="t-name" class="text-4xl font-bold tm-text-blue mb-2">Arsenal RP</h2>
+                        <div class="flex gap-6 text-sm">
+                            <div><span class="text-gray-500 block">Stadyum:</span> <span id="t-stadium" class="font-bold">Emirates Stadium</span></div>
+                            <div><span class="text-gray-500 block">Kapasite:</span> <span id="t-capacity" class="font-bold">60.704</span></div>
+                            <div><span class="text-gray-500 block">Yaş Ortalaması:</span> <span id="t-age" class="font-bold">25.3</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tm-blue text-white p-4 text-right rounded-bl-lg absolute top-0 right-0">
+                    <div class="text-xs font-bold opacity-80 uppercase mb-1">Kadro Değeri</div>
+                    <div class="text-3xl font-black"><span id="t-value">€ 745.50 mil.</span></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Kadro Tablosu -->
+                <div class="md:col-span-2">
+                    <div class="bg-white card-shadow rounded-sm overflow-hidden">
+                        <div class="bg-gray-100 px-4 py-3 font-bold text-xs tm-text-blue uppercase border-b border-gray-200">Güncel Kadro</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="text-gray-500 border-b border-gray-200 bg-white">
+                                <tr>
+                                    <th class="p-3 w-8">#</th>
+                                    <th class="p-3">Oyuncu</th>
+                                    <th class="p-3 text-center">Mevki</th>
+                                    <th class="p-3 text-center">Yaş</th>
+                                    <th class="p-3 text-right">Piyasa değeri</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t-squad" class="text-gray-800">
+                                <!-- JS Dinamik Dolduracak -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sağ Taraf: Hoca ve Lig Sırası -->
                 <div>
-                    <h2 class="text-4xl font-bold tm-text-blue mb-2">Arsenal RP</h2>
-                    <div class="flex gap-6 text-sm">
-                        <div><span class="text-gray-500 block">Stadyum:</span> <span class="font-bold">Emirates Stadium</span></div>
-                        <div><span class="text-gray-500 block">Kapasite:</span> <span class="font-bold">60.704</span></div>
-                        <div><span class="text-gray-500 block">Yaş Ortalaması:</span> <span class="font-bold">25.3</span></div>
-                    </div>
-                </div>
-            </div>
-            <!-- Mavi Kadro Değeri Kutusu -->
-            <div class="tm-blue text-white p-4 text-right rounded-bl-lg absolute top-0 right-0">
-                <div class="text-xs font-bold opacity-80 uppercase mb-1">Kadro Değeri</div>
-                <div class="text-3xl font-black">€ <span class="text-4xl">745.50</span> mil.</div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Sol Sütun (Güncel Kadro Tablosu) -->
-            <div class="md:col-span-2">
-                <div class="bg-white card-shadow rounded-sm overflow-hidden">
-                    <div class="bg-gray-100 px-4 py-3 font-bold text-xs tm-text-blue uppercase border-b border-gray-200">Güncel Kadro</div>
-                    <table class="w-full text-left text-sm">
-                        <thead class="text-gray-500 border-b border-gray-200 bg-white">
-                            <tr>
-                                <th class="p-3 w-8">#</th>
-                                <th class="p-3">Oyuncu</th>
-                                <th class="p-3 text-center">Mevki</th>
-                                <th class="p-3 text-center">Yaş</th>
-                                <th class="p-3 text-right">Piyasa değeri</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-800">
-                            <!-- Oyuncu Satırı 1 -->
-                            <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="p-3 text-center text-xs text-gray-500">1</td>
-                                <td class="p-3 flex items-center gap-3">
-                                    <img src="https://ui-avatars.com/api/?name=B+S&background=random&color=fff&size=30" class="rounded-sm">
-                                    <span class="font-bold tm-text-blue">Bukayo Saka</span>
-                                </td>
-                                <td class="p-3 text-center text-gray-500">Sağ Kanat</td>
-                                <td class="p-3 text-center font-bold">22</td>
-                                <td class="p-3 text-right font-bold">120.00 mil. €</td>
-                            </tr>
-                            <!-- Oyuncu Satırı 2 (Gri Arka Plan) -->
-                            <tr class="bg-gray-50 border-b border-gray-100 hover:bg-gray-100">
-                                <td class="p-3 text-center text-xs text-gray-500">2</td>
-                                <td class="p-3 flex items-center gap-3">
-                                    <img src="https://ui-avatars.com/api/?name=M+O&background=random&color=fff&size=30" class="rounded-sm">
-                                    <span class="font-bold tm-text-blue">Martin Ødegaard</span>
-                                </td>
-                                <td class="p-3 text-center text-gray-500">On Numara</td>
-                                <td class="p-3 text-center font-bold">25</td>
-                                <td class="p-3 text-right font-bold">90.00 mil. €</td>
-                            </tr>
-                            <!-- Oyuncu Satırı 3 -->
-                            <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="p-3 text-center text-xs text-gray-500">3</td>
-                                <td class="p-3 flex items-center gap-3">
-                                    <img src="https://ui-avatars.com/api/?name=W+S&background=random&color=fff&size=30" class="rounded-sm">
-                                    <span class="font-bold tm-text-blue">William Saliba</span>
-                                </td>
-                                <td class="p-3 text-center text-gray-500">Stoper</td>
-                                <td class="p-3 text-center font-bold">23</td>
-                                <td class="p-3 text-right font-bold">75.00 mil. €</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Sağ Sütun (Teknik Direktör & İstatistikler) -->
-            <div>
-                <!-- Teknik Direktör Kartı -->
-                <div class="bg-white card-shadow rounded-sm mb-6">
-                    <div class="tm-blue px-4 py-2 font-bold text-xs text-white uppercase rounded-t-sm">Teknik Direktör</div>
-                    <div class="p-6 text-center">
-                        <img src="https://ui-avatars.com/api/?name=M+A&background=random&color=fff&size=100" class="mx-auto mb-4 border border-gray-200 p-1">
-                        <div class="font-bold text-xl tm-text-blue">Mikel Arteta</div>
-                        <div class="text-xs text-gray-500 uppercase mt-1">Teknik Direktör</div>
-                    </div>
-                </div>
-
-                <!-- Lig İstatistiği Kartı (Screenshot 1 Birebir) -->
-                <div class="bg-gray-100 p-4 border border-gray-200 text-center rounded-sm">
-                    <div class="flex gap-2 mb-4 justify-center">
-                        <div class="tm-blue text-white p-3 rounded-sm w-20">
-                            <div class="text-2xl font-bold">1.</div>
-                            <div class="text-[10px] uppercase">Lig Sırası</div>
-                        </div>
-                        <div class="bg-green-600 text-white p-3 rounded-sm w-20">
-                            <div class="text-2xl font-bold">25</div>
-                            <div class="text-[10px] uppercase">Puan</div>
+                    <div class="bg-white card-shadow rounded-sm mb-6">
+                        <div class="tm-blue px-4 py-2 font-bold text-xs text-white uppercase rounded-t-sm">Teknik Direktör</div>
+                        <div class="p-6 text-center">
+                            <img src="https://ui-avatars.com/api/?name=M+A&background=random&color=fff&size=80" class="mx-auto mb-3 rounded-full border">
+                            <div id="t-manager" class="font-bold text-xl tm-text-blue">Mikel Arteta</div>
+                            <div class="text-xs text-gray-500 uppercase mt-1">Teknik Direktör</div>
                         </div>
                     </div>
-                    
-                    <div class="grid grid-cols-4 gap-2 mb-4 bg-white border border-gray-200 p-2 rounded-sm text-sm">
-                        <div class="border-r border-gray-200">
-                            <div class="font-bold text-lg">10</div><div class="text-[10px] text-gray-500 uppercase">Maç</div>
-                        </div>
-                        <div class="border-r border-gray-200 text-green-600">
-                            <div class="font-bold text-lg">8</div><div class="text-[10px] uppercase">G</div>
-                        </div>
-                        <div class="border-r border-gray-200 text-gray-600">
-                            <div class="font-bold text-lg">1</div><div class="text-[10px] uppercase">B</div>
-                        </div>
-                        <div class="text-red-600">
-                            <div class="font-bold text-lg">1</div><div class="text-[10px] uppercase">M</div>
-                        </div>
-                    </div>
-
-                    <div class="text-sm text-gray-600 flex justify-between px-2">
-                        <span>Attığı Gol: <span class="font-bold text-black">28</span></span>
-                        <span>Yediği Gol: <span class="font-bold text-black">13</span></span>
-                    </div>
-                    <div class="text-sm font-bold text-blue-600 mt-2">Averaj: +15</div>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <!-- Kulüp Değiştirme JS Mantığı -->
+    <script>
+        const teams = {
+            arsenal: {
+                name: "Arsenal RP", logo: "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
+                stadium: "Emirates Stadium", capacity: "60.704", age: "25.3", value: "€ 745.50 mil.", manager: "Mikel Arteta",
+                squad: [
+                    { id: 1, name: "Bukayo Saka", pos: "Sağ Kanat", age: 22, val: "120.00 mil. €" },
+                    { id: 2, name: "Martin Ødegaard", pos: "On Numara", age: 25, val: "90.00 mil. €" },
+                    { id: 3, name: "William Saliba", pos: "Stoper", age: 23, val: "75.00 mil. €" }
+                ]
+            },
+            dortmund: {
+                name: "Dortmund RP", logo: "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg",
+                stadium: "Signal Iduna Park", capacity: "81.365", age: "24.8", value: "€ 485.00 mil.", manager: "Nuri Şahin",
+                squad: [
+                    { id: 1, name: "Arda G. 🎖️", pos: "On Numara", age: 21, val: "45.00 mil. €" },
+                    { id: 2, name: "Serhou Guirassy", pos: "Santrafor", age: 28, val: "40.00 mil. €" },
+                    { id: 3, name: "Julian Brandt", pos: "Sol Kanat", age: 28, val: "40.00 mil. €" }
+                ]
+            },
+            milan: {
+                name: "Milan RP", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d0/AC-Milan-AC-Milan.svg",
+                stadium: "San Siro", capacity: "75.817", age: "26.1", value: "€ 520.00 mil.", manager: "Paulo Fonseca",
+                squad: [
+                    { id: 1, name: "Rafael Leão", pos: "Sol Kanat", age: 25, val: "90.00 mil. €" },
+                    { id: 2, name: "Theo Hernández", pos: "Sol Bek", age: 26, val: "60.00 mil. €" }
+                ]
+            },
+            manutd: {
+                name: "Manchester United RP", logo: "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+                stadium: "Old Trafford", capacity: "74.310", age: "25.9", value: "€ 610.00 mil.", manager: "Erik ten Hag",
+                squad: [
+                    { id: 1, name: "Bruno Fernandes", pos: "On Numara", age: 29, val: "70.00 mil. €" },
+                    { id: 2, name: "Marcus Rashford", pos: "Sol Kanat", age: 26, val: "60.00 mil. €" }
+                ]
+            },
+            paris: {
+                name: "Paris SG RP", logo: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg",
+                stadium: "Parc des Princes", capacity: "47.929", age: "24.1", value: "€ 820.00 mil.", manager: "Luis Enrique",
+                squad: [
+                    { id: 1, name: "Ousmane Dembélé", pos: "Sağ Kanat", age: 27, val: "60.00 mil. €" },
+                    { id: 2, name: "Achraf Hakimi", pos: "Sağ Bek", age: 25, val: "60.00 mil. €" }
+                ]
+            },
+            atletico: {
+                name: "Atletico Madrid RP", logo: "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg",
+                stadium: "Metropolitano", capacity: "70.460", age: "27.5", value: "€ 500.00 mil.", manager: "Diego Simeone",
+                squad: [
+                    { id: 1, name: "Julián Alvarez", pos: "Santrafor", age: 24, val: "75.00 mil. €" },
+                    { id: 2, name: "Antoine Griezmann", pos: "Santrafor", age: 33, val: "25.00 mil. €" }
+                ]
+            },
+            feyenoord: {
+                name: "Feyenoord RP", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e3/Feyenoord_logo.svg",
+                stadium: "De Kuip", capacity: "51.177", age: "23.9", value: "€ 280.00 mil.", manager: "Brian Priske",
+                squad: [
+                    { id: 1, name: "Santiago Giménez", pos: "Santrafor", age: 23, val: "40.00 mil. €" },
+                    { id: 2, name: "Quinten Timber", pos: "Orta Saha", age: 23, val: "28.00 mil. €" }
+                ]
+            },
+            barcelona: {
+                name: "Barcelona RP", logo: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg",
+                stadium: "Spotify Camp Nou", capacity: "99.354", age: "24.5", value: "€ 875.00 mil.", manager: "Hansi Flick",
+                squad: [
+                    { id: 1, name: "Lamine Yamal", pos: "Sağ Kanat", age: 17, val: "120.00 mil. €" },
+                    { id: 2, name: "Pedri", pos: "Orta Saha", age: 21, val: "80.00 mil. €" }
+                ]
+            }
+        };
+
+        function loadTeam(teamKey) {
+            const data = teams[teamKey];
+            if(!data) return;
+
+            document.getElementById('t-name').innerText = data.name;
+            document.getElementById('t-logo').src = data.logo;
+            document.getElementById('t-stadium').innerText = data.stadium;
+            document.getElementById('t-capacity').innerText = data.capacity;
+            document.getElementById('t-age').innerText = data.age;
+            document.getElementById('t-value').innerText = data.value;
+            document.getElementById('t-manager').innerText = data.manager;
+
+            const squadTable = document.getElementById('t-squad');
+            squadTable.innerHTML = '';
+
+            data.squad.forEach((player, index) => {
+                const row = `
+                    <tr class="${index % 2 === 1 ? 'bg-gray-50' : ''} border-b border-gray-100 hover:bg-gray-100">
+                        <td class="p-3 text-center text-xs text-gray-500">${player.id}</td>
+                        <td class="p-3 font-bold tm-text-blue">${player.name}</td>
+                        <td class="p-3 text-center text-gray-500">${player.pos}</td>
+                        <td class="p-3 text-center font-bold">${player.age}</td>
+                        <td class="p-3 text-right font-bold">${player.val}</td>
+                    </tr>
+                `;
+                squadTable.innerHTML += row;
+            });
+
+            document.getElementById('team-view').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Sayfa açıldığında Arsenal'i yükle
+        loadTeam('arsenal');
+    </script>
 </body>
 </html>
-
