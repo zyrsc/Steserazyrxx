@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krallıklar | Zeyrox League</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #020617 100%); color: white; min-height: 100vh; }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .tab-box { display: none; }
+        .tab-box.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigasyon Menüsü -->
+    <nav class="glass-panel sticky top-0 z-50 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">ZL</div>
+                <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Zeyrox League</span>
+            </a>
+            <div class="hidden md:flex space-x-1">
+                <a href="index.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-house mr-1"></i> Ana Sayfa</a>
+                <a href="puan-durumu.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-list-ol mr-1"></i> Puan Durumu</a>
+                <a href="fikstur.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-regular fa-calendar-days mr-1"></i> Fikstür</a>
+                <a href="kralliklar.html" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium"><i class="fa-solid fa-trophy mr-1"></i> Krallıklar</a>
+                <a href="transfermarkt.html" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart"></i> Transfermarkt</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-6 mt-6">
+        
+        <!-- Geçiş Butonları -->
+        <div class="flex justify-center gap-4 mb-8">
+            <button id="btn-gol" onclick="switchKrallik('gol')" class="bg-yellow-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2">
+                <i class="fa-solid fa-futbol text-xl"></i> Gol Krallığı
+            </button>
+            <button id="btn-asist" onclick="switchKrallik('asist')" class="bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2">
+                <i class="fa-solid fa-handshake text-xl"></i> Asist Krallığı
+            </button>
+        </div>
+
+        <!-- Gol Krallığı Tablosu -->
+        <div id="tab-gol" class="tab-box active glass-panel p-6 rounded-2xl border-l-4 border-yellow-400">
+            <h2 class="text-2xl font-bold mb-6 text-yellow-400 border-b border-slate-700 pb-3 flex items-center justify-between">
+                <span><i class="fa-solid fa-crown mr-2"></i> Gol Krallığı</span>
+                <span class="text-sm font-normal text-slate-400">Sezon 2026</span>
+            </h2>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-bold text-yellow-400">#1</span>
+                        <img src="https://ui-avatars.com/api/?name=Arda+G&background=fbbf24&color=000&rounded=true&size=40">
+                        <div><p class="font-bold text-base">Arda G. 🎖️</p><p class="text-xs text-slate-400">Dortmund RP</p></div>
+                    </div>
+                    <span class="font-black text-2xl text-yellow-400">21 <span class="text-xs text-slate-400">Gol</span></span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-bold text-slate-300">#2</span>
+                        <img src="https://ui-avatars.com/api/?name=Kilian+M&background=38bdf8&color=000&rounded=true&size=40">
+                        <div><p class="font-bold text-base">Kilian M.</p><p class="text-xs text-slate-400">Paris RP</p></div>
+                    </div>
+                    <span class="font-black text-2xl text-slate-200">18 <span class="text-xs text-slate-400">Gol</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asist Krallığı Tablosu -->
+        <div id="tab-asist" class="tab-box glass-panel p-6 rounded-2xl border-l-4 border-emerald-400">
+            <h2 class="text-2xl font-bold mb-6 text-emerald-400 border-b border-slate-700 pb-3 flex items-center justify-between">
+                <span><i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Asist Krallığı</span>
+                <span class="text-sm font-normal text-slate-400">Sezon 2026</span>
+            </h2>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-bold text-emerald-400">#1</span>
+                        <img src="https://ui-avatars.com/api/?name=Hakan+K&background=10b981&color=fff&rounded=true&size=40">
+                        <div><p class="font-bold text-base">Hakan K.</p><p class="text-xs text-slate-400">Milan RP</p></div>
+                    </div>
+                    <span class="font-black text-2xl text-emerald-400">14 <span class="text-xs text-slate-400">Asist</span></span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function switchKrallik(type) {
+            document.querySelectorAll('.tab-box').forEach(el => el.classList.remove('active'));
+            const btnGol = document.getElementById('btn-gol');
+            const btnAsist = document.getElementById('btn-asist');
+
+            if(type === 'gol') {
+                document.getElementById('tab-gol').classList.add('active');
+                btnGol.className = "bg-yellow-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+                btnAsist.className = "bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+            } else {
+                document.getElementById('tab-asist').classList.add('active');
+                btnAsist.className = "bg-emerald-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+                btnGol.className = "bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+            }
+        }
+    </script>
+</body>
+</html>
+
