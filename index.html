@@ -19,14 +19,13 @@
 </head>
 <body class="antialiased overflow-x-hidden">
 
-    <!-- KAP Bildirim Bandı -->
+    <!-- KAP Bildirim Bandı (data.json'dan Otomatik Dolar) -->
     <div class="bg-emerald-600 text-white text-sm font-semibold py-2 marquee-container flex items-center">
         <div class="px-4 bg-emerald-800 z-10 relative flex items-center shadow-lg uppercase tracking-wider">
             <i class="fa-solid fa-bolt text-yellow-300 mr-2"></i> KAP Bildirimleri
         </div>
-        <div class="marquee ml-4">
-            🔄 RESMİ: 🎖️ Kaptan V. Yılmaz 15M€ karşılığında Paris'e transfer oldu! &nbsp;&nbsp; | &nbsp;&nbsp; 
-            ✍️ YENİ SÖZLEŞME: E. Arslan Dortmund ile 3 yıllık yeni kontrat imzaladı.
+        <div id="kap-bandi" class="marquee ml-4">
+            Son KAP bildirimleri yükleniyor...
         </div>
     </div>
 
@@ -53,7 +52,7 @@
             <div class="glass-panel p-8 rounded-2xl relative overflow-hidden">
                 <h1 class="text-4xl font-bold mb-4">Zeyrox League RP Portalı</h1>
                 <p class="text-slate-300 text-lg mb-6 leading-relaxed">
-                    Ligdeki tüm güncel durumlara menüler üzerinden ulaşabilirsin. Transfermarkt sayfamızdan kulüplerin üzerine tıklayarak kadro değerlerini ve stadyum detaylarını inceleyebilirsin!
+                    Discord sunucumuz üzerinden yönetilen canlı verilerle ligdeki tüm güncel durumlara menülerden ulaşabilirsin. Discord'da girilen transferler anında yukarıdaki KAP bandına düşer!
                 </p>
                 <div class="flex gap-4">
                     <a href="puan-durumu.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
@@ -76,5 +75,28 @@
             </div>
         </div>
     </main>
+
+    <!-- DATA.JSON OTOMATİK VERİ ÇEKME KODU -->
+    <script>
+        async function kapYukle() {
+            try {
+                const res = await fetch('data.json');
+                const data = await res.json();
+                const haberler = data.kap_haberleri || [];
+                
+                if (haberler.length > 0) {
+                    document.getElementById('kap-bandi').innerHTML = haberler.join(' &nbsp;&nbsp; | &nbsp;&nbsp; ');
+                } else {
+                    document.getElementById('kap-bandi').innerHTML = 'Henüz resmi KAP açıklaması bulunmuyor.';
+                }
+            } catch (e) {
+                console.error("KAP haberleri yüklenirken hata oluştu:", e);
+                document.getElementById('kap-bandi').innerHTML = 'KAP haberleri yüklenemedi.';
+            }
+        }
+
+        // Sayfa açıldığında veriyi otomatik çek
+        kapYukle();
+    </script>
 </body>
 </html>
