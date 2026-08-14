@@ -36,19 +36,10 @@
         <div class="glass-panel p-6 rounded-2xl">
             <h2 class="text-2xl font-bold mb-6 border-b border-slate-700 pb-3 flex justify-between items-center">
                 <span><i class="fa-regular fa-calendar-days mr-2 text-blue-400"></i> Lig Fikstürü</span>
-                <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300">11. Hafta</span>
+                <span id="hafta-baslik" class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300">...</span>
             </h2>
-            <div class="space-y-4">
-                <div class="bg-slate-800/60 p-4 rounded-xl flex items-center justify-between border-l-4 border-emerald-500">
-                    <span class="font-bold w-1/3 text-right">Dortmund</span>
-                    <span class="px-4 py-1 bg-slate-900 rounded-lg font-bold border border-slate-600">2 - 1</span>
-                    <span class="font-bold w-1/3">Paris</span>
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl flex items-center justify-between border-l-4 border-slate-600">
-                    <span class="font-bold text-slate-400 w-1/3 text-right">Barcelona</span>
-                    <span class="px-4 py-1 bg-slate-900 rounded-lg font-bold text-slate-400 border border-slate-700">21:00</span>
-                    <span class="font-bold text-slate-400 w-1/3">Manchester Utd.</span>
-                </div>
+            <div id="fikstur-listesi" class="space-y-4">
+                <!-- JSON'dan veriler buraya yüklenecek -->
             </div>
         </div>
 
@@ -80,6 +71,35 @@
             </div>
         </div>
     </main>
+
+    <script>
+        async function fiksturYukle() {
+            try {
+                const res = await fetch('lig_verileri.json');
+                const data = await res.json();
+                
+                document.getElementById('hafta-baslik').innerText = data.fikstur.hafta;
+                const liste = document.getElementById('fikstur-listesi');
+                
+                liste.innerHTML = data.fikstur.maclar.map(mac => {
+                    let oynandiMi = mac.durum === "oynandi";
+                    let borderColor = oynandiMi ? "border-emerald-500" : "border-slate-600";
+                    let textColor = oynandiMi ? "text-white" : "text-slate-400";
+                    
+                    return `
+                    <div class="bg-slate-800/60 p-4 rounded-xl flex items-center justify-between border-l-4 ${borderColor}">
+                        <span class="font-bold w-1/3 text-right ${textColor}">${mac.ev_sahibi}</span>
+                        <span class="px-4 py-1 bg-slate-900 rounded-lg font-bold border ${oynandiMi ? 'border-slate-600' : 'border-slate-700 text-slate-400'}">${mac.skor}</span>
+                        <span class="font-bold w-1/3 ${textColor}">${mac.deplasman}</span>
+                    </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error("Fikstür çekilirken hata oluştu:", err);
+            }
+        }
+        fiksturYukle();
+    </script>
 </body>
 </html>
 
