@@ -17,28 +17,31 @@
 </head>
 <body class="antialiased">
 
+    <!-- Navigasyon Menüsü -->
     <nav class="glass-panel sticky top-0 z-50 border-b border-slate-700">
-        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
             <a href="index.html" class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-xl font-bold">ZL</div>
-                <span class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Zeyrox League</span>
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">ZL</div>
+                <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Zeyrox League</span>
             </a>
             <div class="hidden md:flex space-x-1">
-                <a href="index.html" class="text-gray-300 hover:bg-slate-800 px-4 py-2 rounded-lg font-medium">Ana Sayfa</a>
-                <a href="puan-durumu.html" class="text-gray-300 hover:bg-slate-800 px-4 py-2 rounded-lg font-medium">Puan Durumu</a>
-                <a href="fikstur.html" class="text-gray-300 hover:bg-slate-800 px-4 py-2 rounded-lg font-medium">Fikstür</a>
-                <a href="kralliklar.html" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium">Krallıklar</a>
-                <a href="transfermarkt.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium">Transfermarkt</a>
+                <a href="index.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-house mr-1"></i> Ana Sayfa</a>
+                <a href="puan-durumu.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-solid fa-list-ol mr-1"></i> Puan Durumu</a>
+                <a href="fikstur.html" class="text-gray-300 hover:bg-slate-800 hover:text-white px-4 py-2 rounded-lg font-medium transition"><i class="fa-regular fa-calendar-days mr-1"></i> Fikstür</a>
+                <a href="kralliklar.html" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium"><i class="fa-solid fa-trophy mr-1"></i> Krallıklar</a>
+                <a href="transfermarkt.html" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2"><i class="fa-solid fa-magnifying-glass-chart"></i> Transfermarkt</a>
             </div>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto p-6 mt-6">
+        
+        <!-- Geçiş Butonları -->
         <div class="flex justify-center gap-4 mb-8">
-            <button id="btn-gol" onclick="switchKrallik('gol')" class="bg-yellow-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2">
+            <button id="btn-gol" onclick="switchKrallik('gol')" class="bg-yellow-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2">
                 <i class="fa-solid fa-futbol text-xl"></i> Gol Krallığı
             </button>
-            <button id="btn-asist" onclick="switchKrallik('asist')" class="bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2">
+            <button id="btn-asist" onclick="switchKrallik('asist')" class="bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2">
                 <i class="fa-solid fa-handshake text-xl"></i> Asist Krallığı
             </button>
         </div>
@@ -47,9 +50,10 @@
         <div id="tab-gol" class="tab-box active glass-panel p-6 rounded-2xl border-l-4 border-yellow-400">
             <h2 class="text-2xl font-bold mb-6 text-yellow-400 border-b border-slate-700 pb-3 flex items-center justify-between">
                 <span><i class="fa-solid fa-crown mr-2"></i> Gol Krallığı</span>
+                <span class="text-sm font-normal text-slate-400">Sezon 2026</span>
             </h2>
             <div id="gol-listesi" class="space-y-3">
-                <p class="text-slate-400">Veriler yükleniyor...</p>
+                <!-- JSON'dan veriler buraya yüklenecek -->
             </div>
         </div>
 
@@ -57,73 +61,71 @@
         <div id="tab-asist" class="tab-box glass-panel p-6 rounded-2xl border-l-4 border-emerald-400">
             <h2 class="text-2xl font-bold mb-6 text-emerald-400 border-b border-slate-700 pb-3 flex items-center justify-between">
                 <span><i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Asist Krallığı</span>
+                <span class="text-sm font-normal text-slate-400">Sezon 2026</span>
             </h2>
             <div id="asist-listesi" class="space-y-3">
-                <p class="text-slate-400">Veriler yükleniyor...</p>
+                <!-- JSON'dan veriler buraya yüklenecek -->
             </div>
         </div>
+
     </main>
 
     <script>
-        // DATA.JSON DOSYASINDAN OTOMATİK VERİ ÇEKEN JAVASCRIPT KODU
-        async function verileriYukle() {
+        async function kralliklariYukle() {
             try {
-                const res = await fetch('data.json');
+                const res = await fetch('lig_verileri.json');
                 const data = await res.json();
-                const oyuncular = Object.values(data.oyuncular || {});
+                
+                const golListesi = document.getElementById('gol-listesi');
+                const asistListesi = document.getElementById('asist-listesi');
 
-                // 1. Gol Krallığı Sıralaması (En çok golden en aza)
-                const golSirali = [...oyuncular].sort((a, b) => b.gol - a.gol);
-                const golContainer = document.getElementById('gol-listesi');
-                golContainer.innerHTML = '';
-
-                golSirali.forEach((p, idx) => {
-                    golContainer.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
-                            <div class="flex items-center gap-4">
-                                <span class="text-xl font-bold ${idx === 0 ? 'text-yellow-400' : 'text-slate-300'}">#${idx + 1}</span>
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(p.isim)}&background=random&color=fff&rounded=true&size=40">
-                                <div><p class="font-bold text-base">${p.isim}</p><p class="text-xs text-slate-400">${p.takim} • ${p.mevki}</p></div>
-                            </div>
-                            <span class="font-black text-2xl text-yellow-400">${p.gol} <span class="text-xs text-slate-400">Gol</span></span>
+                // Gol Krallığı Çizimi
+                golListesi.innerHTML = data.kralliklar.gol.map(oyuncu => `
+                    <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xl font-bold ${oyuncu.sira === 1 ? 'text-yellow-400' : 'text-slate-300'}">#${oyuncu.sira}</span>
+                            <img src="${oyuncu.foto}" class="rounded-full w-10 h-10">
+                            <div><p class="font-bold text-base">${oyuncu.isim}</p><p class="text-xs text-slate-400">${oyuncu.takim}</p></div>
                         </div>
-                    `;
-                });
+                        <span class="font-black text-2xl ${oyuncu.sira === 1 ? 'text-yellow-400' : 'text-slate-200'}">${oyuncu.skor} <span class="text-xs text-slate-400">Gol</span></span>
+                    </div>
+                `).join('');
 
-                // 2. Asist Krallığı Sıralaması (En çok asistten en aza)
-                const asistSirali = [...oyuncular].sort((a, b) => b.asist - a.asist);
-                const asistContainer = document.getElementById('asist-listesi');
-                asistContainer.innerHTML = '';
-
-                asistSirali.forEach((p, idx) => {
-                    asistContainer.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
-                            <div class="flex items-center gap-4">
-                                <span class="text-xl font-bold ${idx === 0 ? 'text-emerald-400' : 'text-slate-300'}">#${idx + 1}</span>
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(p.isim)}&background=random&color=fff&rounded=true&size=40">
-                                <div><p class="font-bold text-base">${p.isim}</p><p class="text-xs text-slate-400">${p.takim} • ${p.mevki}</p></div>
-                            </div>
-                            <span class="font-black text-2xl text-emerald-400">${p.asist} <span class="text-xs text-slate-400">Asist</span></span>
+                // Asist Krallığı Çizimi
+                asistListesi.innerHTML = data.kralliklar.asist.map(oyuncu => `
+                    <div class="flex justify-between items-center bg-slate-800/60 p-4 rounded-xl">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xl font-bold ${oyuncu.sira === 1 ? 'text-emerald-400' : 'text-slate-300'}">#${oyuncu.sira}</span>
+                            <img src="${oyuncu.foto}" class="rounded-full w-10 h-10">
+                            <div><p class="font-bold text-base">${oyuncu.isim}</p><p class="text-xs text-slate-400">${oyuncu.takim}</p></div>
                         </div>
-                    `;
-                });
-
+                        <span class="font-black text-2xl ${oyuncu.sira === 1 ? 'text-emerald-400' : 'text-slate-200'}">${oyuncu.skor} <span class="text-xs text-slate-400">Asist</span></span>
+                    </div>
+                `).join('');
+                
             } catch (err) {
-                console.error("Veriler alınırken hata oluştu:", err);
+                console.error("Krallık verileri çekilirken hata oluştu:", err);
             }
         }
+        
+        kralliklariYukle();
 
         function switchKrallik(type) {
             document.querySelectorAll('.tab-box').forEach(el => el.classList.remove('active'));
+            const btnGol = document.getElementById('btn-gol');
+            const btnAsist = document.getElementById('btn-asist');
+
             if(type === 'gol') {
                 document.getElementById('tab-gol').classList.add('active');
+                btnGol.className = "bg-yellow-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+                btnAsist.className = "bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
             } else {
                 document.getElementById('tab-asist').classList.add('active');
+                btnAsist.className = "bg-emerald-500 text-slate-900 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
+                btnGol.className = "bg-slate-800 text-slate-300 font-extrabold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition flex items-center gap-2";
             }
         }
-
-        // Sayfa yüklendiğinde verileri çek
-        verileriYukle();
     </script>
 </body>
 </html>
+
