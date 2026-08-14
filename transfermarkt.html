@@ -3,246 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transfermarkt | Zeyrox League</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Serie A | Transfermarkt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f2f4f5; color: #333; }
-        .tm-blue { background-color: #1a3151; }
-        .tm-text-blue { color: #1a3151; }
-        .card-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        :root { --tm-dark: #002d62; --bg: #f0f2f5; --white: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: auto; }
+        .back-btn { background: var(--tm-dark); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block; margin-bottom: 20px; transition: 0.2s; }
+        .back-btn:hover { background: #001a3a; transform: translateX(-5px); }
+        .header-card { background: var(--white); border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .team-brand { display: flex; align-items: center; gap: 30px; }
+        .team-logo { width: 80px; height: 80px; object-fit: contain; }
+        .team-info h1 { margin: 0; font-size: 32px; color: var(--tm-dark); font-weight: 800; }
+        .team-meta { display: flex; gap: 40px; margin-top: 10px; font-size: 13px; color: #666; }
+        .meta-item b { display: block; color: #333; font-weight: 700; }
+        .value-badge { background: var(--tm-dark); color: white; padding: 20px 40px; border-radius: 8px; text-align: right; }
+        .value-badge span { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
+        .value-badge div { font-size: 28px; font-weight: 800; }
+        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card-header { padding: 15px 20px; font-weight: 800; color: var(--tm-dark); border-bottom: 1px solid #eee; font-size: 14px; background: #fafafa; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: #fafafa; font-size: 11px; color: #999; text-transform: uppercase; }
+        td { padding: 12px 15px; border-bottom: 1px solid #f2f2f2; font-size: 14px; }
+        .player-cell { display: flex; align-items: center; gap: 15px; }
+        .player-img { width: 40px; height: 40px; border-radius: 6px; background: #eee; object-fit: cover; }
+        .p-name { font-weight: 700; color: var(--tm-dark); }
+        .p-sub { font-size: 11px; color: #999; display: block; }
+        .p-val { font-weight: 800; color: var(--tm-dark); text-align: right; }
+        .manager-box { text-align: center; padding: 30px; }
+        .manager-img { width: 130px; height: 130px; border-radius: 15px; object-fit: cover; background: #eee; margin-bottom: 15px; border: 4px solid #f0f2f5; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; }
+        .stat-card { padding: 15px; border-radius: 10px; text-align: center; color: white; }
+        .blue-card { background: var(--tm-dark); }
+        .green-card { background: #27ae60; }
+        .stat-val { font-size: 22px; font-weight: 800; display: block; }
+        .stat-label { font-size: 10px; font-weight: 700; opacity: 0.8; }
+        .mini-stats { display: flex; justify-content: space-between; padding: 15px 20px; background: #fcfcfc; border-top: 1px solid #eee; }
+        .mini-item { text-align: center; flex: 1; }
+        .mini-item label { display: block; color: #999; font-size: 10px; font-weight: 700; }
+        .empty-msg { text-align: center; padding: 60px 20px; color: #999; font-weight: 700; font-size: 16px; }
     </style>
 </head>
-<body class="antialiased pb-10">
+<body>
 
-    <!-- Navbar -->
-    <nav class="tm-blue text-white py-3 px-6 flex justify-between items-center sticky top-0 z-50">
-        <a href="index.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition">
-            <i class="fa-solid fa-arrow-left"></i> <span class="text-xs font-bold">Zeyrox Portalı'na Dön</span>
-        </a>
-        <div class="text-2xl font-bold tracking-tight">Transfermarkt</div>
-        <div class="flex items-center gap-3">
-            <span class="text-sm font-bold">Yigitrise</span>
-            <img src="https://ui-avatars.com/api/?name=Yigit+R&background=fff&color=1a3151&rounded=true&size=32" class="border border-white">
-        </div>
-    </nav>
-
-    <div class="max-w-6xl mx-auto mt-6 px-4">
-        
-        <!-- ZEYROX KULÜPLERİ GRID (GERÇEK LOGOLAR + TIKLANABİLİR) -->
-        <div class="bg-white card-shadow rounded-sm mb-8">
-            <div class="bg-gray-200 px-4 py-2 font-bold text-xs text-gray-700 uppercase border-b border-gray-300">Zeyrox League Kulüpleri (İncelemek İçin Tıkla)</div>
-            <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                
-                <div onclick="loadTeam('dortmund')" class="border border-gray-200 rounded p-4 text-center hover:border-yellow-500 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Dortmund</span>
+<div class="container">
+    <a href="transfer_menu.html" class="back-btn">← LİG MENÜSÜ</a>
+    
+    <div id="dashboard">
+        <div class="header-card">
+            <div class="team-brand">
+                <img id="tLogo" src="" class="team-logo">
+                <div class="team-info">
+                    <h1 id="tName">-</h1>
+                    <div class="team-meta">
+                        <div class="meta-item">Stadyum: <b id="tStadium">-</b></div>
+                        <div class="meta-item">Yaş Ortalaması: <b id="tAgeAvg">-</b></div>
+                    </div>
                 </div>
-
-                <div onclick="loadTeam('milan')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/AC-Milan-AC-Milan.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Milan</span>
-                </div>
-
-                <div onclick="loadTeam('arsenal')" class="border border-gray-200 rounded p-4 text-center hover:border-red-600 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Arsenal</span>
-                </div>
-
-                <div onclick="loadTeam('manutd')" class="border border-gray-200 rounded p-4 text-center hover:border-red-700 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Manchester United</span>
-                </div>
-
-                <div onclick="loadTeam('paris')" class="border border-gray-200 rounded p-4 text-center hover:border-blue-600 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Paris</span>
-                </div>
-
-                <div onclick="loadTeam('atletico')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Atletico Madrid</span>
-                </div>
-
-                <div onclick="loadTeam('feyenoord')" class="border border-gray-200 rounded p-4 text-center hover:border-red-500 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Feyenoord_logo.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Feyenoord</span>
-                </div>
-
-                <div onclick="loadTeam('barcelona')" class="border border-gray-200 rounded p-4 text-center hover:border-blue-800 hover:shadow-md cursor-pointer transition">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" class="h-12 mx-auto mb-2 object-contain">
-                    <span class="font-bold text-sm">Barcelona</span>
-                </div>
-
+            </div>
+            <div class="value-badge">
+                <span>KADRO DEĞERİ</span>
+                <div id="tTotalVal">€ 0.00 mil.</div>
             </div>
         </div>
 
-        <hr class="border-t-2 border-gray-300 my-8">
+        <div class="main-grid">
+            <div class="card">
+                <div class="card-header">GÜNCEL KADRO</div>
+                <table id="squadTable">
+                    <thead>
+                        <tr>
+                            <th>OYUNCU</th>
+                            <th style="text-align:center">YAŞ</th>
+                            <th style="text-align:right">PİYASA DEĞERİ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="squadBody"></tbody>
+                </table>
+            </div>
 
-        <!-- DİNAMİK TAKIM DETAY ALANI -->
-        <div id="team-view">
-            <!-- Takım Başlığı -->
-            <div class="bg-white p-6 flex flex-col md:flex-row justify-between items-center card-shadow mb-6 relative">
-                <div class="flex items-center gap-6">
-                    <img id="t-logo" src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" class="h-24 w-24 object-contain">
-                    <div>
-                        <h2 id="t-name" class="text-4xl font-bold tm-text-blue mb-2">Arsenal RP</h2>
-                        <div class="flex gap-6 text-sm">
-                            <div><span class="text-gray-500 block">Stadyum:</span> <span id="t-stadium" class="font-bold">Emirates Stadium</span></div>
-                            <div><span class="text-gray-500 block">Kapasite:</span> <span id="t-capacity" class="font-bold">60.704</span></div>
-                            <div><span class="text-gray-500 block">Yaş Ortalaması:</span> <span id="t-age" class="font-bold">25.3</span></div>
+            <div class="side-content">
+                <div class="card" style="margin-bottom: 20px;">
+                    <div class="card-header" style="text-align:center">TEKNİK DİREKTÖR</div>
+                    <div class="manager-box">
+                        <img id="mImg" src="" class="manager-img" onerror="this.src='https://www.transfermarkt.com.tr/assets/6504b2e1/images/portrait/medium/default.jpg'">
+                        <h3 id="mName" style="margin: 10px 0 5px 0;">-</h3>
+                        <span style="font-size: 11px; color:#999; font-weight:700;">TEKNİK DİREKTÖR</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="stats-grid">
+                        <div class="stat-card blue-card">
+                            <span class="stat-label">LİG SIRASI</span>
+                            <span id="rankVal" class="stat-val">-</span>
+                        </div>
+                        <div class="stat-card green-card">
+                            <span class="stat-label">PUAN</span>
+                            <span id="puanVal" class="stat-val">-</span>
                         </div>
                     </div>
-                </div>
-                <div class="tm-blue text-white p-4 text-right rounded-bl-lg absolute top-0 right-0">
-                    <div class="text-xs font-bold opacity-80 uppercase mb-1">Kadro Değeri</div>
-                    <div class="text-3xl font-black"><span id="t-value">€ 745.50 mil.</span></div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Kadro Tablosu -->
-                <div class="md:col-span-2">
-                    <div class="bg-white card-shadow rounded-sm overflow-hidden">
-                        <div class="bg-gray-100 px-4 py-3 font-bold text-xs tm-text-blue uppercase border-b border-gray-200">Güncel Kadro</div>
-                        <table class="w-full text-left text-sm">
-                            <thead class="text-gray-500 border-b border-gray-200 bg-white">
-                                <tr>
-                                    <th class="p-3 w-8">#</th>
-                                    <th class="p-3">Oyuncu</th>
-                                    <th class="p-3 text-center">Mevki</th>
-                                    <th class="p-3 text-center">Yaş</th>
-                                    <th class="p-3 text-right">Piyasa değeri</th>
-                                </tr>
-                            </thead>
-                            <tbody id="t-squad" class="text-gray-800">
-                                <!-- JS Dinamik Dolduracak -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Sağ Taraf: Hoca ve Lig Sırası -->
-                <div>
-                    <div class="bg-white card-shadow rounded-sm mb-6">
-                        <div class="tm-blue px-4 py-2 font-bold text-xs text-white uppercase rounded-t-sm">Teknik Direktör</div>
-                        <div class="p-6 text-center">
-                            <img src="https://ui-avatars.com/api/?name=M+A&background=random&color=fff&size=80" class="mx-auto mb-3 rounded-full border">
-                            <div id="t-manager" class="font-bold text-xl tm-text-blue">Mikel Arteta</div>
-                            <div class="text-xs text-gray-500 uppercase mt-1">Teknik Direktör</div>
-                        </div>
+                    <div class="mini-stats" id="matchStats"></div>
+                    <div style="padding: 15px; text-align:center; font-size: 12px; color: #666; border-top: 1px solid #eee;">
+                        Attığı Gol: <b id="goalA" style="color:var(--tm-dark)">-</b> | 
+                        Yediği Gol: <b id="goalY" style="color:red">-</b>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 
-    <!-- Kulüp Değiştirme JS Mantığı -->
-    <script>
-        const teams = {
-            arsenal: {
-                name: "Arsenal RP", logo: "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
-                stadium: "Emirates Stadium", capacity: "60.704", age: "25.3", value: "€ 745.50 mil.", manager: "Mikel Arteta",
-                squad: [
-                    { id: 1, name: "Bukayo Saka", pos: "Sağ Kanat", age: 22, val: "120.00 mil. €" },
-                    { id: 2, name: "Martin Ødegaard", pos: "On Numara", age: 25, val: "90.00 mil. €" },
-                    { id: 3, name: "William Saliba", pos: "Stoper", age: 23, val: "75.00 mil. €" }
-                ]
-            },
-            dortmund: {
-                name: "Dortmund RP", logo: "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg",
-                stadium: "Signal Iduna Park", capacity: "81.365", age: "24.8", value: "€ 485.00 mil.", manager: "Nuri Şahin",
-                squad: [
-                    { id: 1, name: "Arda G. 🎖️", pos: "On Numara", age: 21, val: "45.00 mil. €" },
-                    { id: 2, name: "Serhou Guirassy", pos: "Santrafor", age: 28, val: "40.00 mil. €" },
-                    { id: 3, name: "Julian Brandt", pos: "Sol Kanat", age: 28, val: "40.00 mil. €" }
-                ]
-            },
-            milan: {
-                name: "Milan RP", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d0/AC-Milan-AC-Milan.svg",
-                stadium: "San Siro", capacity: "75.817", age: "26.1", value: "€ 520.00 mil.", manager: "Paulo Fonseca",
-                squad: [
-                    { id: 1, name: "Rafael Leão", pos: "Sol Kanat", age: 25, val: "90.00 mil. €" },
-                    { id: 2, name: "Theo Hernández", pos: "Sol Bek", age: 26, val: "60.00 mil. €" }
-                ]
-            },
-            manutd: {
-                name: "Manchester United RP", logo: "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
-                stadium: "Old Trafford", capacity: "74.310", age: "25.9", value: "€ 610.00 mil.", manager: "Erik ten Hag",
-                squad: [
-                    { id: 1, name: "Bruno Fernandes", pos: "On Numara", age: 29, val: "70.00 mil. €" },
-                    { id: 2, name: "Marcus Rashford", pos: "Sol Kanat", age: 26, val: "60.00 mil. €" }
-                ]
-            },
-            paris: {
-                name: "Paris SG RP", logo: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg",
-                stadium: "Parc des Princes", capacity: "47.929", age: "24.1", value: "€ 820.00 mil.", manager: "Luis Enrique",
-                squad: [
-                    { id: 1, name: "Ousmane Dembélé", pos: "Sağ Kanat", age: 27, val: "60.00 mil. €" },
-                    { id: 2, name: "Achraf Hakimi", pos: "Sağ Bek", age: 25, val: "60.00 mil. €" }
-                ]
-            },
-            atletico: {
-                name: "Atletico Madrid RP", logo: "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg",
-                stadium: "Metropolitano", capacity: "70.460", age: "27.5", value: "€ 500.00 mil.", manager: "Diego Simeone",
-                squad: [
-                    { id: 1, name: "Julián Alvarez", pos: "Santrafor", age: 24, val: "75.00 mil. €" },
-                    { id: 2, name: "Antoine Griezmann", pos: "Santrafor", age: 33, val: "25.00 mil. €" }
-                ]
-            },
-            feyenoord: {
-                name: "Feyenoord RP", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e3/Feyenoord_logo.svg",
-                stadium: "De Kuip", capacity: "51.177", age: "23.9", value: "€ 280.00 mil.", manager: "Brian Priske",
-                squad: [
-                    { id: 1, name: "Santiago Giménez", pos: "Santrafor", age: 23, val: "40.00 mil. €" },
-                    { id: 2, name: "Quinten Timber", pos: "Orta Saha", age: 23, val: "28.00 mil. €" }
-                ]
-            },
-            barcelona: {
-                name: "Barcelona RP", logo: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg",
-                stadium: "Spotify Camp Nou", capacity: "99.354", age: "24.5", value: "€ 875.00 mil.", manager: "Hansi Flick",
-                squad: [
-                    { id: 1, name: "Lamine Yamal", pos: "Sağ Kanat", age: 17, val: "120.00 mil. €" },
-                    { id: 2, name: "Pedri", pos: "Orta Saha", age: 21, val: "80.00 mil. €" }
-                ]
+<script>
+    async function init() {
+        try {
+            const res = await fetch('transfer_verileri.json');
+            const data = await res.json();
+            const portraitDefault = 'https://www.transfermarkt.com.tr/assets/6504b2e1/images/portrait/medium/default.jpg';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            let teamName = urlParams.get('team');
+
+            if(!teamName || !data.takimlar[teamName]) {
+                teamName = "Juventus";
             }
-        };
 
-        function loadTeam(teamKey) {
-            const data = teams[teamKey];
-            if(!data) return;
+            const team = data.takimlar[teamName];
 
-            document.getElementById('t-name').innerText = data.name;
-            document.getElementById('t-logo').src = data.logo;
-            document.getElementById('t-stadium').innerText = data.stadium;
-            document.getElementById('t-capacity').innerText = data.capacity;
-            document.getElementById('t-age').innerText = data.age;
-            document.getElementById('t-value').innerText = data.value;
-            document.getElementById('t-manager').innerText = data.manager;
+            // Header ve Logo
+            document.getElementById('tLogo').src = team.logo || "https://tmssl.akamaized.net/images/wappen/head/default.png";
+            document.getElementById('tName').innerText = teamName;
+            document.getElementById('tStadium').innerText = team.stadyum || "Bilinmiyor";
+            document.getElementById('tAgeAvg').innerText = team.yas_ort || "-";
+            
+            // Teknik Direktör Fotoğraf Ayarı
+            if(team.hoca) {
+                document.getElementById('mName').innerText = team.hoca.isim;
+                let hocaFoto = team.hoca.foto;
+                // Eğer internet linki değilse başına ./ ekle (Yerel dosyayı bulması için)
+                if (hocaFoto && !hocaFoto.startsWith('http')) {
+                    hocaFoto = "./" + hocaFoto;
+                }
+                document.getElementById('mImg').src = hocaFoto || portraitDefault;
+            }
 
-            const squadTable = document.getElementById('t-squad');
-            squadTable.innerHTML = '';
-
-            data.squad.forEach((player, index) => {
-                const row = `
-                    <tr class="${index % 2 === 1 ? 'bg-gray-50' : ''} border-b border-gray-100 hover:bg-gray-100">
-                        <td class="p-3 text-center text-xs text-gray-500">${player.id}</td>
-                        <td class="p-3 font-bold tm-text-blue">${player.name}</td>
-                        <td class="p-3 text-center text-gray-500">${player.pos}</td>
-                        <td class="p-3 text-center font-bold">${player.age}</td>
-                        <td class="p-3 text-right font-bold">${player.val}</td>
-                    </tr>
+            // İstatistikler
+            document.getElementById('rankVal').innerText = team.lig_sirasi || "-";
+            document.getElementById('puanVal').innerText = team.puan || "0";
+            
+            if(team.istatistik) {
+                document.getElementById('goalA').innerText = team.istatistik.atilan;
+                document.getElementById('goalY').innerText = team.istatistik.yenilen;
+                document.getElementById('matchStats').innerHTML = `
+                    <div class="mini-item"><label>Maç</label><b>${team.istatistik.mac}</b></div>
+                    <div class="mini-item"><label style="color:#27ae60">G</label><b>${team.istatistik.g}</b></div>
+                    <div class="mini-item"><label style="color:#f39c12">B</label><b>${team.istatistik.b}</b></div>
+                    <div class="mini-item"><label style="color:#e74c3c">M</label><b>${team.istatistik.m}</b></div>
                 `;
-                squadTable.innerHTML += row;
-            });
+            }
 
-            document.getElementById('team-view').scrollIntoView({ behavior: 'smooth' });
+            // Kadro ve Oyuncu Fotoğrafları
+            const tbody = document.getElementById('squadBody');
+            if (team.kadro && team.kadro.length > 0) {
+                let totalValue = 0;
+                tbody.innerHTML = team.kadro.map((p, i) => {
+                    totalValue += parseFloat(p.deger);
+                    
+                    let pFoto = p.foto;
+                    // Eğer internet linki değilse yerel yolu düzenle
+                    if (pFoto && !pFoto.startsWith('http')) {
+                        pFoto = "./" + pFoto;
+                    }
+
+                    return `
+                        <tr>
+                            <td>
+                                <div class="player-cell">
+                                    <span style="color:#ccc; font-size:10px; width:15px;">${i+1}</span>
+                                    <img src="${pFoto || portraitDefault}" class="player-img" onerror="this.src='${portraitDefault}'">
+                                    <div>
+                                        <span class="p-name">${p.isim}</span>
+                                        <span class="p-sub">Oyuncu</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align:center; font-weight:600;">${p.yas}</td>
+                            <td class="p-val">${p.deger} mil. €</td>
+                        </tr>
+                    `;
+                }).join('');
+                document.getElementById('tTotalVal').innerText = `€ ${totalValue.toFixed(2)} mil.`;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" class="empty-msg">TAKIMDA OYUNCU YOK</td></tr>`;
+                document.getElementById('tTotalVal').innerText = `€ 0.00 mil.`;
+            }
+
+        } catch (err) {
+            console.error("Hata:", err);
         }
-
-        // Sayfa açıldığında Arsenal'i yükle
-        loadTeam('arsenal');
-    </script>
+    }
+    init();
+</script>
 </body>
 </html>
