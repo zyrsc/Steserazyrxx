@@ -1,31 +1,31 @@
 {
   "puan_durumu": [
-    { "sira": 1, "takim": "Dortmund", "logo": "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg", "o": 6, "g": 6, "b": 0, "m": 0, "ag": 44, "yg": 6, "av": 38, "puan": 18, "renk": "emerald" },
-    { "sira": 2, "takim": "Man. United", "logo": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg", "o": 6, "g": 6, "b": 0, "m": 0, "ag": 31, "yg": 4, "av": 27, "puan": 18, "renk": "blue" },
-    { "sira": 3, "takim": "Arsenal", "logo": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", "o": 6, "g": 4, "b": 0, "m": 2, "ag": 32, "yg": 17, "av": 15, "puan": 12, "renk": "blue" },
-    { "sira": 4, "takim": "Feyenoord", "logo": "https://upload.wikimedia.org/wikipedia/commons/4/41/Feyenoord_logo.svg", "o": 6, "g": 3, "b": 0, "m": 3, "ag": 7, "yg": 21, "av": -14, "puan": 9, "renk": "blue" },
-    { "sira": 5, "takim": "Barcelona", "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg", "o": 6, "g": 2, "b": 1, "m": 3, "ag": 11, "yg": 15, "av": -4, "puan": 7, "renk": "slate" },
-    { "sira": 6, "takim": "Milan", "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg", "o": 6, "g": 0, "b": 2, "m": 4, "ag": 3, "yg": 26, "av": -23, "puan": 2, "renk": "slate" },
-    { "sira": 7, "takim": "Atl. Madrid", "logo": "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg", "o": 6, "g": 0, "b": 2, "m": 4, "ag": 4, "yg": 28, "av": -24, "puan": 2, "renk": "red" },
-    { "sira": 8, "takim": "PSG", "logo": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", "o": 6, "g": 0, "b": 1, "m": 5, "ag": 7, "yg": 22, "av": -15, "puan": 1, "renk": "red" }
+    { "sira": 1, "takim": "Dortmund", "logo": "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg", "o": 7, "g": 7, "b": 0, "m": 0, "ag": 54, "yg": 9, "av": 45, "puan": 21, "renk": "emerald" },
+    { "sira": 2, "takim": "Man. United", "logo": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg", "o": 7, "g": 6, "b": 0, "m": 1, "ag": 34, "yg": 14, "av": 20, "puan": 18, "renk": "blue" },
+    { "sira": 3, "takim": "Arsenal", "logo": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", "o": 7, "g": 4, "b": 0, "m": 3, "ag": 34, "yg": 23, "av": 11, "puan": 12, "renk": "blue" },
+    { "sira": 4, "takim": "Feyenoord", "logo": "https://upload.wikimedia.org/wikipedia/commons/4/41/Feyenoord_logo.svg", "o": 7, "g": 4, "b": 0, "m": 3, "ag": 14, "yg": 23, "av": -9, "puan": 12, "renk": "blue" },
+    { "sira": 5, "takim": "Barcelona", "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg", "o": 7, "g": 3, "b": 1, "m": 3, "ag": 17, "yg": 17, "av": 0, "puan": 10, "renk": "slate" },
+    { "sira": 6, "takim": "PSG", "logo": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", "o": 7, "g": 1, "b": 1, "m": 5, "ag": 12, "yg": 25, "av": -13, "puan": 4, "renk": "slate" },
+    { "sira": 7, "takim": "Milan", "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg", "o": 7, "g": 0, "b": 2, "m": 5, "ag": 6, "yg": 31, "av": -25, "puan": 2, "renk": "red" },
+    { "sira": 8, "takim": "Atl. Madrid", "logo": "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg", "o": 7, "g": 0, "b": 2, "m": 5, "ag": 6, "yg": 35, "av": -29, "puan": 2, "renk": "red" }
   ],
   "fikstur": {
-    "hafta": "7. Hafta",
+    "hafta": "8. Hafta",
     "maclar": [
-      { "ev_sahibi": "Milan", "skor": "vs", "deplasman": "PSG", "durum": "oynanmadi" },
-      { "ev_sahibi": "Atl. Madrid", "skor": "vs", "deplasman": "Feyenoord", "durum": "oynanmadi" },
-      { "ev_sahibi": "Dortmund", "skor": "vs", "deplasman": "Man. United", "durum": "oynanmadi" },
-      { "ev_sahibi": "Barcelona", "skor": "vs", "deplasman": "Arsenal", "durum": "oynanmadi" }
+      { "ev_sahibi": "PSG", "skor": "vs", "deplasman": "Man. United", "durum": "oynanmadi" },
+      { "ev_sahibi": "Arsenal", "skor": "vs", "deplasman": "Feyenoord", "durum": "oynanmadi" },
+      { "ev_sahibi": "Barcelona", "skor": "vs", "deplasman": "Milan", "durum": "oynanmadi" },
+      { "ev_sahibi": "Dortmund", "skor": "vs", "deplasman": "Atl. Madrid", "durum": "oynanmadi" }
     ]
   },
   "tum_fikstur": [
     {
       "hafta": "7. Hafta",
       "maclar": [
-        { "ev_sahibi": "Milan", "skor": "vs", "deplasman": "PSG", "durum": "oynanmadi" },
-        { "ev_sahibi": "Atl. Madrid", "skor": "vs", "deplasman": "Feyenoord", "durum": "oynanmadi" },
-        { "ev_sahibi": "Dortmund", "skor": "vs", "deplasman": "Man. United", "durum": "oynanmadi" },
-        { "ev_sahibi": "Barcelona", "skor": "vs", "deplasman": "Arsenal", "durum": "oynanmadi" }
+        { "ev_sahibi": "Milan", "skor": "3 - 5", "deplasman": "PSG", "durum": "oynandi" },
+        { "ev_sahibi": "Atl. Madrid", "skor": "2 - 7", "deplasman": "Feyenoord", "durum": "oynandi" },
+        { "ev_sahibi": "Dortmund", "skor": "10 - 3", "deplasman": "Man. United", "durum": "oynandi" },
+        { "ev_sahibi": "Barcelona", "skor": "6 - 2", "deplasman": "Arsenal", "durum": "oynandi" }
       ]
     },
     {
